@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
-const Result = require('../models/Result');
+const router  = express.Router();
+const Result  = require('../models/Result');
 
 // GET /api/result?roll=&regNo=&year=&board=&examination=
 router.get('/result', async (req, res) => {
@@ -16,10 +16,11 @@ router.get('/result', async (req, res) => {
 
     const query = {
       rollNo: roll.trim(),
-      regNo: regNo.trim()
+      regNo:  regNo.trim(),
+      hidden: { $ne: true }   // never expose hidden results to public
     };
-    if (year) query.year = year.trim();
-    if (board) query.board = board.trim();
+    if (year)        query.year = year.trim();
+    if (board)       query.board = board.trim();
     if (examination) query.examination = examination.trim();
 
     const result = await Result.findOne(query);
@@ -38,35 +39,33 @@ router.get('/result', async (req, res) => {
   }
 });
 
-// GET /api/boards — return distinct boards
+// GET /api/boards — distinct boards (non-hidden only)
 router.get('/boards', async (req, res) => {
   try {
-    const boards = await Result.distinct('board');
-    res.json({ success: true, data: boards });
+    const boards = await Result.distinct('board', { hidden: { $ne: true } });
+    res.json({ success: true, data: boards.sort() });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
-// GET /api/years — return distinct years
+// GET /api/years — distinct years (non-hidden only)
 router.get('/years', async (req, res) => {
   try {
-    const years = await Result.distinct('year');
+    const years = await Result.distinct('year', { hidden: { $ne: true } });
     res.json({ success: true, data: years.sort((a, b) => b - a) });
   } catch (err) {
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
-// POST /api/result — add a result (admin use)
-router.post('/result', async (req, res) => {
+// GET /api/examinations — distinct examination types (non-hidden only)
+router.get('/examinations', async (req, res) => {
   try {
-    const result = new Result(req.body);
-    await result.save();
-    res.status(201).json({ success: true, data: result });
+    const exams = await Result.distinct('examination', { hidden: { $ne: true } });
+    res.json({ success: true, data: exams.sort() });
   } catch (err) {
-    console.error('Save error:', err);
-    res.status(400).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: 'Server error.' });
   }
 });
 
