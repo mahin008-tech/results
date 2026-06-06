@@ -439,11 +439,7 @@
       <label for="examination">Examination</label>
       <span class="colon">:</span>
       <select id="examination">
-        <option value="">— Select Examination —</option>
-        <option value="SSC/Dakhil/Equivalent" selected>SSC/Dakhil/Equivalent</option>
-        <option value="HSC/Alim/Equivalent">HSC/Alim/Equivalent</option>
-        <option value="JSC/JDC">JSC/JDC</option>
-        <option value="PSC/Ebtedayee">PSC/Ebtedayee</option>
+        <option value="">— Loading… —</option>
       </select>
     </div>
 
@@ -451,11 +447,7 @@
       <label for="year">Year</label>
       <span class="colon">:</span>
       <select id="year">
-        <option value="2025" selected>2025</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-        <option value="2021">2021</option>
+        <option value="">— Loading… —</option>
       </select>
     </div>
 
@@ -463,18 +455,7 @@
       <label for="board">Board</label>
       <span class="colon">:</span>
       <select id="board">
-        <option value="">— Select Board —</option>
-        <option value="Dhaka">Dhaka</option>
-        <option value="Comilla" selected>Comilla</option>
-        <option value="Rajshahi">Rajshahi</option>
-        <option value="Jessore">Jessore</option>
-        <option value="Chittagong">Chittagong</option>
-        <option value="Barisal">Barisal</option>
-        <option value="Sylhet">Sylhet</option>
-        <option value="Dinajpur">Dinajpur</option>
-        <option value="Mymensingh">Mymensingh</option>
-        <option value="Madrasah">Madrasah</option>
-        <option value="Technical">Technical</option>
+        <option value="">— Loading… —</option>
       </select>
     </div>
 
@@ -525,6 +506,7 @@
           <tr>
             <th style="width:80px">Code</th>
             <th>Subject</th>
+            <th style="width:80px">Marks</th>
             <th style="width:90px">Grade</th>
           </tr>
         </thead>
@@ -554,6 +536,47 @@
 </footer>
 
 <script>
+  // ── LOAD DROPDOWNS FROM API ──
+  async function loadDropdowns() {
+    try {
+      const [examRes, yearRes, boardRes] = await Promise.all([
+        fetch('/api/examinations').then(r => r.json()),
+        fetch('/api/years').then(r => r.json()),
+        fetch('/api/boards').then(r => r.json())
+      ]);
+
+      const examSel  = document.getElementById('examination');
+      const yearSel  = document.getElementById('year');
+      const boardSel = document.getElementById('board');
+
+      examSel.innerHTML  = '<option value="">— Select Examination —</option>';
+      yearSel.innerHTML  = '';
+      boardSel.innerHTML = '<option value="">— Select Board —</option>';
+
+      (examRes.data  || []).forEach(e => examSel.innerHTML  += `<option value="${e}">${e}</option>`);
+      (yearRes.data  || []).forEach(y => yearSel.innerHTML  += `<option value="${y}">${y}</option>`);
+      (boardRes.data || []).forEach(b => boardSel.innerHTML += `<option value="${b}">${b}</option>`);
+
+      // Sensible defaults: first exam, first year
+      if (examRes.data && examRes.data.length)  examSel.value  = examRes.data[0];
+      if (yearRes.data && yearRes.data.length)  yearSel.value  = yearRes.data[0];
+    } catch (err) {
+      // Fallback static options if API fails
+      document.getElementById('examination').innerHTML =
+        '<option value="">— Select Examination —</option>' +
+        '<option value="SSC/Dakhil/Equivalent" selected>SSC/Dakhil/Equivalent</option>' +
+        '<option value="HSC/Alim/Equivalent">HSC/Alim/Equivalent</option>' +
+        '<option value="JSC/JDC">JSC/JDC</option>';
+      document.getElementById('year').innerHTML =
+        '<option value="2025" selected>2025</option><option value="2024">2024</option>';
+      document.getElementById('board').innerHTML =
+        '<option value="">— Select Board —</option>' +
+        ['Dhaka','Comilla','Rajshahi','Jessore','Chittagong','Barisal','Sylhet','Dinajpur','Mymensingh','Madrasah','Technical']
+        .map(b => `<option value="${b}">${b}</option>`).join('');
+    }
+  }
+  loadDropdowns();
+
   // ── CAPTCHA ──
   let captchaA, captchaB, captchaAnswer;
   function generateCaptcha() {
@@ -696,6 +719,7 @@
       tr.innerHTML = `
         <td style="font-family:'JetBrains Mono',monospace;font-size:13px;">${s.code}</td>
         <td>${s.name}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:13px;text-align:center;">${s.marks != null ? s.marks : '–'}</td>
         <td><span class="grade-badge ${gradeClass(s.grade)}">${s.grade}</span></td>
       `;
       tbody.appendChild(tr);
