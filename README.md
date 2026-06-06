@@ -1,173 +1,113 @@
-# 🏫 Education Board Results Portal
+# Results Portal — with Admin Panel
 
-A full-stack results portal inspired by Bangladesh's official education board result website — built with **Node.js**, **Express**, **MongoDB**, and vanilla **HTML/CSS/JS**.
-
----
-
-## 📁 Project Structure
-
-```
-results-portal/
-├── server.js              # Main Express server
-├── .env                   # Environment variables
-├── package.json
-├── models/
-│   └── Result.js          # Mongoose schema
-├── routes/
-│   └── results.js         # API endpoints
-├── seed/
-│   └── seed.js            # Sample data seeder
-└── public/
-    └── index.html         # Frontend (served statically)
-```
+A Node.js + MongoDB education results portal for Bangladesh boards, with a fully hidden admin panel for managing results.
 
 ---
 
-## ⚙️ Prerequisites
+## Setup
 
-- **Node.js** v18+ — https://nodejs.org
-- **MongoDB** v6+ running locally — https://www.mongodb.com/try/download/community
-  - Or use **MongoDB Atlas** (free cloud): https://cloud.mongodb.com
-
----
-
-## 🚀 Setup & Run
-
-### 1. Install dependencies
 ```bash
-cd results-portal
 npm install
 ```
 
-### 2. Configure environment
 Edit `.env`:
-```env
+```
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/results_portal
-
-# For MongoDB Atlas, use:
-# MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/results_portal
+ADMIN_KEY=your_super_secret_key_here
 ```
 
-### 3. Seed sample data
+Seed sample data (optional):
 ```bash
 npm run seed
 ```
-This inserts 3 sample students. Sample test credentials:
 
-| Roll   | Reg No        | Year | Board      | Exam                     |
-|--------|---------------|------|------------|--------------------------|
-| 579209 | 2211120839    | 2025 | Comilla    | SSC/Dakhil/Equivalent    |
-| 123456 | 2211000001    | 2025 | Dhaka      | SSC/Dakhil/Equivalent    |
-| 654321 | 2211000002    | 2025 | Chittagong | HSC/Alim/Equivalent      |
-
-### 4. Start server
+Start:
 ```bash
 npm start
-# or for development with auto-reload:
+# or for development:
 npm run dev
 ```
 
-### 5. Open in browser
-```
-http://localhost:3000
-```
+---
+
+## URLs
+
+| URL | Description |
+|-----|-------------|
+| `http://localhost:3000/` | Public results portal |
+| `http://localhost:3000/admin-panel?key=YOUR_ADMIN_KEY` | Admin panel (hidden from public) |
+
+> Normal users visiting `/admin-panel` without the correct key see a generic 404 page — the admin panel's existence is completely hidden.
 
 ---
 
-## 🌐 API Endpoints
+## Admin Panel Features
 
-### Get a result
-```
-GET /api/result?roll=579209&regNo=2211120839&year=2025&board=Comilla&examination=SSC/Dakhil/Equivalent
-```
-
-### Get available boards
-```
-GET /api/boards
-```
-
-### Get available years
-```
-GET /api/years
-```
-
-### Add a result (admin)
-```
-POST /api/result
-Content-Type: application/json
-
-{
-  "rollNo": "999999",
-  "regNo": "2211999999",
-  "examination": "SSC/Dakhil/Equivalent",
-  "year": "2025",
-  "board": "Dhaka",
-  "name": "STUDENT NAME",
-  "fatherName": "FATHER NAME",
-  "motherName": "MOTHER NAME",
-  "dateOfBirth": "15-03-08",
-  "group": "SCIENCE",
-  "type": "REGULAR",
-  "institute": "SCHOOL NAME",
-  "result": "PASS",
-  "gpa": "5.00",
-  "subjects": [
-    { "code": "101", "name": "BANGLA", "grade": "A+" },
-    { "code": "107", "name": "ENGLISH", "grade": "A+" }
-  ]
-}
-```
-
-### Health check
-```
-GET /health
-```
+- **Dashboard** — live stats (total, passed, failed, hidden results)
+- **Results Table** — paginated, searchable, filterable by exam/year/board
+- **Add Result** — full form with all fields including subjects, marks, grades
+- **Edit Result** — edit any field including subjects
+- **Delete Result** — with confirmation dialog
+- **Toggle Hide** — hide/show a result from public search instantly
+- **Religion subjects** — select student's faith (Islam, Hindu, Christian, Buddhist, Other) to set the correct religion subject label
 
 ---
 
-## 🗄️ MongoDB Schema
+## Religion Subject Labels
+
+When adding/editing a result, select the student's faith. The religion subject is labelled accordingly:
+
+| Faith | Label |
+|-------|-------|
+| Islam | ISLAM AND MORAL EDUCATION |
+| Hindu | HINDU RELIGION AND MORAL EDUCATION |
+| Christian | CHRISTIAN RELIGION AND MORAL EDUCATION |
+| Buddhist | BUDDHIST RELIGION AND MORAL EDUCATION |
+| Other | RELIGION AND MORAL EDUCATION |
+
+---
+
+## Admin API Endpoints
+
+All require `?key=ADMIN_KEY` query param or `x-admin-key` header.
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/admin/results` | List all results (paginated) |
+| GET | `/api/admin/results/:id` | Get single result |
+| POST | `/api/admin/results` | Create result |
+| PUT | `/api/admin/results/:id` | Update result |
+| PATCH | `/api/admin/results/:id/toggle-hide` | Toggle visibility |
+| DELETE | `/api/admin/results/:id` | Delete result |
+| GET | `/api/admin/meta` | Distinct boards/years/examinations |
+| GET | `/api/admin/stats` | Dashboard counts |
+
+---
+
+## Public API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/result` | Search result by roll+reg+year+board+exam |
+| GET | `/api/boards` | List boards (excluding hidden results) |
+| GET | `/api/years` | List years (excluding hidden results) |
+| GET | `/api/examinations` | List examination types |
+
+---
+
+## Data Model
 
 ```js
 {
-  rollNo:      String,   // required, indexed
-  regNo:       String,   // required, indexed
-  examination: String,   // e.g. "SSC/Dakhil/Equivalent"
-  year:        String,
-  board:       String,
-  name:        String,
-  fatherName:  String,
-  motherName:  String,
-  dateOfBirth: String,
-  group:       String,
-  type:        String,   // "REGULAR" | "IRREGULAR"
-  institute:   String,
-  result:      String,   // "PASS" | "FAIL"
-  gpa:         String,
-  subjects: [
-    { code: String, name: String, grade: String }
-  ]
+  rollNo, regNo,               // required, indexed
+  examination, year, board,    // required
+  name, fatherName, motherName,
+  dateOfBirth, group, type, institute,
+  result: "PASS" | "FAIL",
+  gpa,
+  religionSubjectLabel,        // per student's faith
+  subjects: [{ code, name, marks, grade }],
+  hidden: Boolean              // hides from public search
 }
 ```
-
----
-
-## ✨ Features
-
-- 🔍 Search by Roll, Reg No, Year, Board, Examination
-- 🧮 Math captcha to prevent bot abuse
-- 📋 Full grade sheet with colour-coded grade badges
-- 🖨 Print-ready result view
-- 📢 Live scrolling news ticker
-- 📱 Responsive for mobile & desktop
-- ⚡ Fast MongoDB indexed queries
-
----
-
-## 🔧 Production Tips
-
-- Use **PM2** to keep the server alive: `pm2 start server.js`
-- Use **Nginx** as a reverse proxy on port 80/443
-- Enable **MongoDB Atlas** for cloud database
-- Add **rate limiting** with `express-rate-limit` for production
-- Add **JWT authentication** for the admin POST endpoint
