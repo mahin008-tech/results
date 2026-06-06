@@ -763,21 +763,10 @@
 </header>
 
 <!-- TICKER -->
-<div class="ticker">
+<div class="ticker" id="notice-ticker" style="display:none">
   <div class="ticker-label">📢 Notice</div>
   <div class="ticker-scroll">
-    <span class="ticker-inner">
-      SSC / Dakhil / Equivalent Result 2025 — Published
-      <span class="dot">★</span>
-      HSC / Alim / Equivalent Result 2025 — Stay tuned for official announcement
-      <span class="dot">★</span>
-      For result discrepancy contact your Board office within 30 days
-      <span class="dot">★</span>
-      Technical support: support@educationboard.gov.bd
-      <span class="dot">★</span>
-      JSC / JDC Result 2025 — Coming Soon
-      <span class="dot">★</span>
-    </span>
+    <span class="ticker-inner" id="ticker-text"></span>
   </div>
 </div>
 
@@ -954,6 +943,19 @@
   const now = new Date();
   document.getElementById('header-date').textContent =
     now.toLocaleDateString('en-BD', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // ── NOTICE TICKER ──
+  (async function loadNotice() {
+    try {
+      const res  = await fetch('/api/notice');
+      const json = await res.json();
+      if (json.success && json.data && json.data.message) {
+        document.getElementById('ticker-text').textContent = json.data.message;
+        document.getElementById('notice-ticker').style.display = 'flex';
+      }
+    } catch (_) { /* silently ignore — ticker stays hidden */ }
+  })();
+
 
   // ── LOAD DROPDOWNS ──
   async function loadDropdowns() {

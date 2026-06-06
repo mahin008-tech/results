@@ -739,6 +739,13 @@
       <span class="nav-icon">➕</span> Add Result
     </div>
 
+    <div class="sidebar-section" style="margin-top:18px;">
+      <div class="sidebar-section-label">Configuration</div>
+    </div>
+    <div class="nav-item" onclick="switchTab('settings')">
+      <span class="nav-icon">📢</span> Notice Settings
+    </div>
+
     <div class="sidebar-bottom">
       <div style="font-size:11px; color:var(--text3); line-height:1.7;">
         Results Portal Admin<br/>
@@ -866,7 +873,104 @@
     </div>
 
   </div><!-- /main -->
+
+  <!-- ══════════════════════════════════
+       SETTINGS TAB
+  ══════════════════════════════════ -->
 </div><!-- /layout -->
+
+<!-- Settings panel rendered outside layout so it can be full-page-ish -->
+<div id="tab-settings" class="tab" style="display:none; padding: 32px 40px; max-width: 720px; margin: 0 auto;">
+
+  <div style="margin-bottom:28px;">
+    <div style="font-size:20px; font-weight:800; color:var(--text); margin-bottom:4px;">📢 Notice Settings</div>
+    <div style="font-size:13px; color:var(--text3);">Manage the scrolling notice banner shown on the public result portal (index.html). Set optional start/end times to control when it appears.</div>
+  </div>
+
+  <!-- status toast -->
+  <div id="notice-toast" style="display:none; padding:12px 18px; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:20px;"></div>
+
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
+
+    <!-- Enabled toggle -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border);">
+      <div>
+        <div style="font-size:14px; font-weight:700; color:var(--text);">Notice Enabled</div>
+        <div style="font-size:12px; color:var(--text3); margin-top:3px;">When off, the ticker is hidden regardless of time settings.</div>
+      </div>
+      <label style="position:relative; display:inline-block; width:46px; height:26px; cursor:pointer;">
+        <input type="checkbox" id="notice-enabled" style="opacity:0; width:0; height:0;">
+        <span id="toggle-track" onclick="document.getElementById('notice-enabled').click()" style="
+          position:absolute; inset:0; border-radius:999px; background:var(--border2);
+          transition:background 0.2s; display:flex; align-items:center; padding:3px;">
+          <span id="toggle-thumb" style="width:20px; height:20px; border-radius:50%; background:white; transition:transform 0.2s; display:block;"></span>
+        </span>
+      </label>
+    </div>
+
+    <!-- Message -->
+    <div style="margin-bottom:20px;">
+      <label style="display:block; font-size:13px; font-weight:700; color:var(--text2); margin-bottom:8px;">Notice Message</label>
+      <textarea id="notice-message" rows="3" placeholder="Enter the notice text to display in the scrolling ticker…" style="
+        width:100%; background:var(--surface2); border:1.5px solid var(--border2);
+        color:var(--text); border-radius:8px; padding:12px 14px; font-family:'Inter',sans-serif;
+        font-size:13.5px; resize:vertical; outline:none; transition:border-color 0.2s;"
+        onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"></textarea>
+      <div style="font-size:11px; color:var(--text3); margin-top:5px;">The text will scroll continuously across the ticker band.</div>
+    </div>
+
+    <!-- Time window -->
+    <div style="margin-bottom:8px;">
+      <label style="display:block; font-size:13px; font-weight:700; color:var(--text2); margin-bottom:6px;">⏱ Time Limit (optional)</label>
+      <div style="font-size:12px; color:var(--text3); margin-bottom:14px;">Leave both blank to show the notice indefinitely while enabled.</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:28px;">
+      <div>
+        <label style="display:block; font-size:12px; font-weight:700; color:var(--text3); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">Start Date &amp; Time</label>
+        <input type="datetime-local" id="notice-start" style="
+          width:100%; background:var(--surface2); border:1.5px solid var(--border2);
+          color:var(--text); border-radius:8px; padding:10px 12px; font-family:'Inter',sans-serif;
+          font-size:13px; outline:none; transition:border-color 0.2s; color-scheme:dark;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"/>
+        <div style="font-size:11px; color:var(--text3); margin-top:5px;">Notice hides before this date/time.</div>
+      </div>
+      <div>
+        <label style="display:block; font-size:12px; font-weight:700; color:var(--text3); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">End Date &amp; Time</label>
+        <input type="datetime-local" id="notice-end" style="
+          width:100%; background:var(--surface2); border:1.5px solid var(--border2);
+          color:var(--text); border-radius:8px; padding:10px 12px; font-family:'Inter',sans-serif;
+          font-size:13px; outline:none; transition:border-color 0.2s; color-scheme:dark;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border2)'"/>
+        <div style="font-size:11px; color:var(--text3); margin-top:5px;">Notice hides after this date/time.</div>
+      </div>
+    </div>
+
+    <!-- Clear time limits -->
+    <div style="margin-bottom:24px;">
+      <button onclick="clearTimeLimits()" style="
+        background:transparent; border:1px solid var(--border2); color:var(--text3);
+        padding:7px 16px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer;
+        transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+        onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text3)'">
+        ✕ Clear Time Limits
+      </button>
+    </div>
+
+    <!-- Save button -->
+    <div style="display:flex; gap:12px; align-items:center;">
+      <button onclick="saveNoticeSettings()" style="
+        background:var(--accent); color:white; border:none;
+        padding:11px 28px; border-radius:8px; font-size:14px; font-weight:700;
+        cursor:pointer; transition:background 0.15s;"
+        onmouseover="this.style.background='var(--accent2)'" onmouseout="this.style.background='var(--accent)'">
+        💾 Save Notice Settings
+      </button>
+      <div id="notice-live-status" style="font-size:12px; color:var(--text3);"></div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- ══════════════════════════════════════════
@@ -1102,14 +1206,25 @@ function up(val) {
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+
+  // Settings tab is outside .tab system — use display toggle
+  const settingsEl = document.getElementById('tab-settings');
+  if (name === 'settings') {
+    settingsEl.style.display = 'block';
+  } else {
+    settingsEl.style.display = 'none';
+    document.getElementById('tab-' + name).classList.add('active');
+  }
+
   document.querySelectorAll('.nav-item').forEach(n => {
     const txt = n.textContent.toLowerCase();
-    if (name === 'dashboard' && txt.includes('dashboard')) n.classList.add('active');
-    if (name === 'results'   && txt.includes('all result')) n.classList.add('active');
+    if (name === 'dashboard' && txt.includes('dashboard'))     n.classList.add('active');
+    if (name === 'results'   && txt.includes('all result'))    n.classList.add('active');
+    if (name === 'settings'  && txt.includes('notice'))        n.classList.add('active');
   });
   if (name === 'results')   loadResults(1);
   if (name === 'dashboard') loadStats();
+  if (name === 'settings')  loadNoticeSettings();
 }
 
 // ══════════════════════════════════════════
@@ -1478,9 +1593,109 @@ document.getElementById('f-religionLabel').addEventListener('change', () => {
 });
 
 // ══════════════════════════════════════════
+// NOTICE SETTINGS
+// ══════════════════════════════════════════
+
+// Sync toggle visual state
+document.getElementById('notice-enabled').addEventListener('change', function () {
+  const track = document.getElementById('toggle-track');
+  const thumb = document.getElementById('toggle-thumb');
+  if (this.checked) {
+    track.style.background = 'var(--accent)';
+    thumb.style.transform  = 'translateX(20px)';
+  } else {
+    track.style.background = 'var(--border2)';
+    thumb.style.transform  = 'translateX(0)';
+  }
+});
+
+async function loadNoticeSettings() {
+  document.getElementById('notice-live-status').textContent = 'Loading…';
+  try {
+    const json = await api('/settings/notice');
+    const d    = json.data;
+    if (!d) { document.getElementById('notice-live-status').textContent = ''; return; }
+
+    document.getElementById('notice-enabled').checked = !!d.enabled;
+    document.getElementById('notice-enabled').dispatchEvent(new Event('change'));
+    document.getElementById('notice-message').value = d.message || '';
+
+    // Convert ISO → datetime-local value (slice off seconds & Z)
+    if (d.startTime) document.getElementById('notice-start').value = d.startTime.slice(0, 16);
+    if (d.endTime)   document.getElementById('notice-end').value   = d.endTime.slice(0, 16);
+
+    updateLiveStatus(d);
+  } catch (err) {
+    document.getElementById('notice-live-status').textContent = 'Failed to load.';
+  }
+}
+
+function updateLiveStatus(d) {
+  const el  = document.getElementById('notice-live-status');
+  const now = new Date();
+  if (!d.enabled) { el.textContent = '🔴 Notice is disabled'; return; }
+  if (!d.message) { el.textContent = '⚠️ No message set'; return; }
+  if (d.startTime && new Date(d.startTime) > now) {
+    el.textContent = `⏳ Scheduled — starts ${new Date(d.startTime).toLocaleString()}`;
+    return;
+  }
+  if (d.endTime && new Date(d.endTime) < now) {
+    el.textContent = `⏰ Time window expired — ended ${new Date(d.endTime).toLocaleString()}`;
+    return;
+  }
+  el.textContent = '🟢 Notice is live on the public portal';
+}
+
+async function saveNoticeSettings() {
+  const message   = document.getElementById('notice-message').value.trim();
+  const enabled   = document.getElementById('notice-enabled').checked;
+  const startRaw  = document.getElementById('notice-start').value;
+  const endRaw    = document.getElementById('notice-end').value;
+
+  const startTime = startRaw ? new Date(startRaw).toISOString() : null;
+  const endTime   = endRaw   ? new Date(endRaw).toISOString()   : null;
+
+  if (startTime && endTime && new Date(startTime) >= new Date(endTime)) {
+    showNoticeToast('⚠️ End time must be after start time.', 'error');
+    return;
+  }
+
+  try {
+    const json = await api('/settings/notice', {
+      method: 'PUT',
+      body: JSON.stringify({ message, enabled, startTime, endTime })
+    });
+    if (json.success) {
+      showNoticeToast('✅ Notice settings saved successfully!', 'success');
+      updateLiveStatus(json.data);
+    } else {
+      showNoticeToast('❌ ' + (json.message || 'Save failed.'), 'error');
+    }
+  } catch (err) {
+    showNoticeToast('❌ ' + (err.message || 'Network error. Please try again.'), 'error');
+  }
+}
+
+function clearTimeLimits() {
+  document.getElementById('notice-start').value = '';
+  document.getElementById('notice-end').value   = '';
+}
+
+function showNoticeToast(msg, type) {
+  const el = document.getElementById('notice-toast');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.background = type === 'success' ? 'var(--green-bg)' : 'var(--red-bg)';
+  el.style.border     = type === 'success' ? '1px solid var(--green)' : '1px solid var(--red)';
+  el.style.color      = type === 'success' ? 'var(--green)' : 'var(--red)';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+// ══════════════════════════════════════════
 // BOOT
 // ══════════════════════════════════════════
 init();
+
 </script>
 </body>
 </html>
