@@ -1,6 +1,7 @@
 const express  = require('express');
 const router   = express.Router();
 const Result   = require('../models/Result');
+const Setting  = require('../models/Setting');
 const adminAuth = require('../middleware/adminAuth');
 
 // All routes below require admin key
@@ -136,4 +137,40 @@ router.get('/stats', async (req, res) => {
   }
 });
 
+// ─────────────────────────────────────────────
+// SETTINGS — notice with optional time limits
+// ─────────────────────────────────────────────
+
+/** GET /api/admin/settings/notice — get current notice config */
+router.get('/settings/notice', async (req, res) => {
+  try {
+    const doc = await Setting.findOne({ key: 'notice' });
+    res.json({ success: true, data: doc ? doc.value : null });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+/** PUT /api/admin/settings/notice — save notice config */
+router.put('/settings/notice', async (req, res) => {
+  try {
+    const { message, startTime, endTime, enabled } = req.body;
+    const value = {
+      message:   message   || '',
+      startTime: startTime || null,   // ISO string or null
+      endTime:   endTime   || null,
+      enabled:   enabled !== false    // default true
+    };
+    const doc = await Setting.findOneAndUpdate(
+      { key: 'notice' },
+      { key: 'notice', value },
+      { upsert: true, new: true }
+    );
+    res.json({ success: true, data: doc.value });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;
+

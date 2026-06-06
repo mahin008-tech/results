@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const Result  = require('../models/Result');
+const Setting = require('../models/Setting');
 
 // GET /api/result?roll=&regNo=&year=&board=&examination=
 router.get('/result', async (req, res) => {
@@ -69,4 +70,22 @@ router.get('/examinations', async (req, res) => {
   }
 });
 
+// GET /api/notice — public notice (respects time window & enabled flag)
+router.get('/notice', async (req, res) => {
+  try {
+    const doc = await Setting.findOne({ key: 'notice' });
+    if (!doc || !doc.value || !doc.value.enabled || !doc.value.message) {
+      return res.json({ success: true, data: null });
+    }
+    const { message, startTime, endTime } = doc.value;
+    const now = new Date();
+    if (startTime && new Date(startTime) > now) return res.json({ success: true, data: null });
+    if (endTime   && new Date(endTime)   < now) return res.json({ success: true, data: null });
+    res.json({ success: true, data: { message } });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+});
+
 module.exports = router;
+
