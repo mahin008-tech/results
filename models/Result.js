@@ -1,27 +1,32 @@
 const mongoose = require('mongoose');
 
 const subjectSchema = new mongoose.Schema({
-  code: { type: String, required: true },
-  name: { type: String, required: true },
-  grade: { type: String, required: true }
+  code:   { type: String, required: true },
+  name:   { type: String, required: true },
+  marks:  { type: Number, default: null },   // numeric marks (optional)
+  grade:  { type: String, required: true }
 });
 
 const resultSchema = new mongoose.Schema({
-  rollNo: { type: String, required: true, index: true },
-  regNo: { type: String, required: true, index: true },
-  examination: { type: String, required: true },
-  year: { type: String, required: true },
-  board: { type: String, required: true },
-  name: { type: String, required: true },
-  fatherName: { type: String },
-  motherName: { type: String },
-  dateOfBirth: { type: String },
-  group: { type: String },
-  type: { type: String, default: 'REGULAR' },
-  institute: { type: String },
-  result: { type: String, enum: ['PASS', 'FAIL'], required: true },
-  gpa: { type: String },
-  subjects: [subjectSchema]
+  rollNo:       { type: String, required: true, index: true },
+  regNo:        { type: String, required: true, index: true },
+  examination:  { type: String, required: true },
+  year:         { type: String, required: true },
+  board:        { type: String, required: true },
+  name:         { type: String, required: true },
+  fatherName:   { type: String },
+  motherName:   { type: String },
+  dateOfBirth:  { type: String },
+  group:        { type: String },
+  type:         { type: String, default: 'REGULAR' },
+  institute:    { type: String },
+  result:       { type: String, enum: ['PASS', 'FAIL'], required: true },
+  gpa:          { type: String },
+  // Religion-related subject label per student's faith
+  religionSubjectLabel: { type: String, default: 'RELIGION & MORAL EDUCATION' },
+  subjects:     [subjectSchema],
+  // Admin controls
+  hidden:       { type: Boolean, default: false }   // hide from public lookup
 }, { timestamps: true });
 
 // Compound index for fast lookup
