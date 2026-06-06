@@ -3,326 +3,829 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel – Results Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <title>Admin Panel — Results Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:        #0f1117;
-      --surface:   #1a1d27;
-      --surface2:  #22263a;
-      --border:    #2e3347;
+      --bg:        #080b12;
+      --surface:   #0e1220;
+      --surface2:  #151929;
+      --surface3:  #1c2235;
+      --border:    #252d42;
+      --border2:   #2e3852;
+      --accent:    #4f8ef7;
+      --accent2:   #3b6fd4;
       --green:     #22c55e;
-      --green-dim: #16a34a;
-      --red:       #ef4444;
-      --red-dim:   #b91c1c;
+      --green-bg:  rgba(34,197,94,0.1);
+      --red:       #f05252;
+      --red-bg:    rgba(240,82,82,0.1);
       --amber:     #f59e0b;
-      --blue:      #3b82f6;
-      --text:      #e2e8f0;
-      --muted:     #8892a4;
-      --gold:      #d4a017;
+      --amber-bg:  rgba(245,158,11,0.1);
+      --purple:    #a78bfa;
+      --text:      #e8edf5;
+      --text2:     #a0aec0;
+      --text3:     #637189;
+      --gold:      #e2b96a;
+      --radius:    10px;
+      --shadow:    0 4px 24px rgba(0,0,0,0.4);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-    a { color: var(--blue); text-decoration: none; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; }
 
-    /* ── TOPBAR ── */
+    /* ═══════════════════════════════════════
+       TOPBAR
+    ═══════════════════════════════════════ */
     .topbar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 56px;
+      padding: 0 28px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 100;
+      backdrop-filter: blur(12px);
     }
-    .topbar-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; }
-    .topbar-brand .badge {
-      background: var(--red);
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .brand-text { font-weight: 800; font-size: 15px; letter-spacing: -0.3px; }
+    .brand-sub  { font-size: 11px; color: var(--text3); font-weight: 400; }
+    .admin-pill {
+      background: linear-gradient(135deg, var(--red), #c0392b);
       color: white;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 8px;
       border-radius: 999px;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
-    .topbar-right { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); }
-    .key-display { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: var(--surface2); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border); }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .key-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 6px;
+      color: var(--text2);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .key-chip::before { content: '🔑'; font-size: 12px; }
 
-    /* ── LAYOUT ── */
-    .layout { display: flex; min-height: calc(100vh - 56px); }
+    /* ═══════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════ */
+    .layout { display: flex; min-height: calc(100vh - 60px); }
 
-    /* ── SIDEBAR ── */
+    /* ═══════════════════════════════════════
+       SIDEBAR
+    ═══════════════════════════════════════ */
     .sidebar {
-      width: 200px;
+      width: 220px;
       background: var(--surface);
       border-right: 1px solid var(--border);
-      padding: 16px 0;
+      padding: 20px 0;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-section { padding: 0 14px; margin-bottom: 6px; margin-top: 14px; }
+    .sidebar-section-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 8px;
     }
     .nav-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 20px;
+      padding: 10px 22px;
       cursor: pointer;
-      font-size: 14px;
-      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text2);
       transition: all 0.15s;
       border-left: 3px solid transparent;
+      margin: 1px 0;
+      border-radius: 0;
     }
-    .nav-item:hover { background: var(--surface2); color: var(--text); }
-    .nav-item.active { background: var(--surface2); color: var(--green); border-left-color: var(--green); }
-    .nav-icon { font-size: 16px; }
+    .nav-item:hover { background: var(--surface3); color: var(--text); }
+    .nav-item.active {
+      background: rgba(79,142,247,0.08);
+      color: var(--accent);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+    .nav-icon { width: 18px; text-align: center; font-size: 15px; flex-shrink: 0; }
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 16px 14px;
+      border-top: 1px solid var(--border);
+    }
 
-    /* ── MAIN ── */
-    .main { flex: 1; padding: 24px; overflow-x: hidden; }
-
-    /* ── TABS ── */
+    /* ═══════════════════════════════════════
+       MAIN
+    ═══════════════════════════════════════ */
+    .main { flex: 1; padding: 28px 32px; overflow-x: hidden; background: var(--bg); }
     .tab { display: none; }
-    .tab.active { display: block; }
+    .tab.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ── STATS ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    /* ═══════════════════════════════════════
+       PAGE HEADER
+    ═══════════════════════════════════════ */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
+    .page-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+    .page-subtitle { font-size: 13px; color: var(--text3); margin-top: 3px; }
+
+    /* ═══════════════════════════════════════
+       STATS
+    ═══════════════════════════════════════ */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
     }
-    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-    .stat-value { font-size: 32px; font-weight: 700; }
+    .stat-card:hover { border-color: var(--border2); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .stat-card.blue::before  { background: var(--accent); }
+    .stat-card.green::before { background: var(--green); }
+    .stat-card.red::before   { background: var(--red); }
+    .stat-card.amber::before { background: var(--amber); }
+    .stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .stat-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .stat-icon.blue  { background: rgba(79,142,247,0.12); }
+    .stat-icon.green { background: var(--green-bg); }
+    .stat-icon.red   { background: var(--red-bg); }
+    .stat-icon.amber { background: var(--amber-bg); }
+    .stat-label { font-size: 12px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+    .stat-value.blue  { color: var(--accent); }
     .stat-value.green { color: var(--green); }
     .stat-value.red   { color: var(--red); }
     .stat-value.amber { color: var(--amber); }
-    .stat-value.blue  { color: var(--blue); }
 
-    /* ── TOOLBAR ── */
-    .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    /* ═══════════════════════════════════════
+       QUICK REFERENCE CARD
+    ═══════════════════════════════════════ */
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      font-size: 13px;
+      line-height: 2;
+      color: var(--text2);
+    }
+    .info-card strong { color: var(--text); }
+    .code-chip {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--surface3);
+      border: 1px solid var(--border2);
+      padding: 2px 8px;
+      border-radius: 5px;
+      font-size: 12px;
+      color: var(--accent);
+    }
+    .info-row-item { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+    .info-row-item:last-child { border-bottom: none; }
+    .info-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ═══════════════════════════════════════
+       TOOLBAR
+    ═══════════════════════════════════════ */
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+    .search-wrap::before {
+      content: '🔍';
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      pointer-events: none;
+    }
+    .search-wrap input { padding-left: 34px !important; }
     .toolbar input, .toolbar select {
       background: var(--surface);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 12px;
-      border-radius: 7px;
+      padding: 9px 13px;
+      border-radius: 8px;
       font-size: 13px;
       font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      width: 100%;
     }
-    .toolbar input { flex: 1; min-width: 200px; }
-    .toolbar input::placeholder { color: var(--muted); }
-    .toolbar input:focus, .toolbar select:focus { outline: none; border-color: var(--blue); }
+    .toolbar input::placeholder { color: var(--text3); }
+    .toolbar input:focus, .toolbar select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,142,247,0.12);
+    }
+    .toolbar select { min-width: 150px; }
 
-    /* ── BUTTONS ── */
+    /* ═══════════════════════════════════════
+       BUTTONS
+    ═══════════════════════════════════════ */
     .btn {
-      padding: 8px 16px;
-      border-radius: 7px;
+      padding: 9px 18px;
+      border-radius: 8px;
       border: none;
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
       font-family: inherit;
-      transition: opacity 0.15s, transform 0.1s;
+      transition: all 0.15s;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
+      white-space: nowrap;
+      letter-spacing: 0.1px;
     }
     .btn:active { transform: scale(0.97); }
-    .btn-green  { background: var(--green); color: #000; }
-    .btn-green:hover { background: #16a34a; }
+    .btn-primary { background: var(--accent); color: white; }
+    .btn-primary:hover { background: var(--accent2); box-shadow: 0 4px 12px rgba(79,142,247,0.3); }
+    .btn-green  { background: var(--green); color: #000; font-weight: 700; }
+    .btn-green:hover { background: #16a34a; box-shadow: 0 4px 12px rgba(34,197,94,0.25); }
     .btn-red    { background: var(--red); color: white; }
-    .btn-red:hover { background: var(--red-dim); }
-    .btn-blue   { background: var(--blue); color: white; }
-    .btn-blue:hover { background: #2563eb; }
-    .btn-ghost  { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
-    .btn-ghost:hover { background: var(--border); }
-    .btn-amber  { background: var(--amber); color: #000; }
-    .btn-sm { padding: 5px 10px; font-size: 12px; }
+    .btn-red:hover { background: #c0392b; box-shadow: 0 4px 12px rgba(240,82,82,0.25); }
+    .btn-ghost  { background: var(--surface3); color: var(--text2); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--border); color: var(--text); }
+    .btn-amber  { background: var(--amber); color: #000; font-weight: 700; }
+    .btn-amber:hover { background: #d97706; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+    .btn-icon { padding: 7px; width: 32px; height: 32px; border-radius: 7px; justify-content: center; }
 
-    /* ── TABLE ── */
-    .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+    /* ═══════════════════════════════════════
+       TABLE
+    ═══════════════════════════════════════ */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     thead { background: var(--surface2); }
-    th { padding: 11px 14px; text-align: left; font-weight: 600; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-    td { padding: 11px 14px; border-top: 1px solid var(--border); vertical-align: middle; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-    .badge-pass { background: rgba(34,197,94,0.15); color: var(--green); padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
-    .badge-fail { background: rgba(239,68,68,0.15); color: var(--red); padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
-    .badge-hidden { background: rgba(245,158,11,0.15); color: var(--amber); padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
-    .badge-visible { background: rgba(59,130,246,0.15); color: var(--blue); padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; }
-    .actions { display: flex; gap: 6px; }
-    .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 700;
+      color: var(--text3);
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 13px 16px; border-bottom: 1px solid rgba(37,45,66,0.6); vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(79,142,247,0.03); }
+    .cell-name { font-weight: 600; color: var(--text); font-size: 13px; }
+    .cell-sub  { font-size: 11px; color: var(--text3); margin-top: 2px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .badge-pass    { background: var(--green-bg); color: var(--green); }
+    .badge-fail    { background: var(--red-bg); color: var(--red); }
+    .badge-hidden  { background: var(--amber-bg); color: var(--amber); }
+    .badge-visible { background: rgba(79,142,247,0.1); color: var(--accent); }
+    .actions { display: flex; gap: 5px; }
+    .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text2); }
 
-    /* ── PAGINATION ── */
-    .pagination { display: flex; gap: 8px; align-items: center; margin-top: 16px; font-size: 13px; }
-    .pagination button { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-family: inherit; }
-    .pagination button:hover:not(:disabled) { background: var(--surface2); }
-    .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
-    .pagination .pg-info { color: var(--muted); }
+    /* ═══════════════════════════════════════
+       PAGINATION
+    ═══════════════════════════════════════ */
+    .pagination {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .pagination button {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      padding: 7px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .pagination button:hover:not(:disabled) { background: var(--surface3); color: var(--text); border-color: var(--border2); }
+    .pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
+    .pagination .pg-info { color: var(--text3); flex: 1; text-align: center; }
 
-    /* ── MODAL ── */
+    /* ═══════════════════════════════════════
+       MODAL
+    ═══════════════════════════════════════ */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
       z-index: 200;
       align-items: flex-start;
       justify-content: center;
-      padding: 32px 16px;
+      padding: 28px 16px 60px;
       overflow-y: auto;
     }
     .modal-overlay.open { display: flex; }
     .modal {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 1px solid var(--border2);
+      border-radius: 14px;
       width: 100%;
-      max-width: 720px;
-      padding: 28px;
+      max-width: 780px;
+      padding: 0;
       position: relative;
+      box-shadow: var(--shadow);
+      animation: modalIn 0.22s ease;
     }
-    .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-    .modal-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 20px; padding: 4px; }
-    .modal-close:hover { color: var(--text); }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(-10px); } to { opacity: 1; transform: none; } }
+    .modal-header {
+      padding: 22px 28px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title { font-size: 17px; font-weight: 800; letter-spacing: -0.3px; }
+    .modal-title-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
+    .modal-close {
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      cursor: pointer;
+      font-size: 14px;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .modal-close:hover { background: var(--red-bg); color: var(--red); border-color: var(--red); }
+    .modal-body { padding: 24px 28px; }
 
-    /* ── FORM ── */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .form-full { grid-column: 1 / -1; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-group label { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
-    .form-group input, .form-group select, .form-group textarea {
+    /* ═══════════════════════════════════════
+       FORM
+    ═══════════════════════════════════════ */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-full  { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .form-group label .req { color: var(--red); margin-left: 2px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
       background: var(--surface2);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 9px 12px;
-      border-radius: 7px;
+      padding: 10px 13px;
+      border-radius: 8px;
       font-size: 13px;
       font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      text-transform: uppercase;   /* auto-caps display */
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--blue); }
-    .form-group textarea { resize: vertical; min-height: 80px; }
-    .form-section-title { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 0 6px; border-top: 1px solid var(--border); margin-top: 6px; grid-column: 1/-1; }
+    /* Keep select options readable */
+    .form-group select option { text-transform: none; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,142,247,0.12);
+    }
+    .form-group input::placeholder { color: var(--text3); text-transform: none; }
+    .form-group textarea { resize: vertical; min-height: 80px; text-transform: uppercase; }
+    /* Date of birth — keep as-is */
+    #f-dateOfBirth { text-transform: none; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; }
+    /* GPA, Roll, Reg — mono */
+    #f-rollNo, #f-regNo, #f-gpa {
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.5px;
+      text-transform: none;
+    }
 
-    /* ── SUBJECTS TABLE IN FORM ── */
-    .subjects-header { display: grid; grid-template-columns: 80px 1fr 90px 80px auto; gap: 8px; margin-bottom: 6px; }
-    .subjects-header span { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
-    .subject-row { display: grid; grid-template-columns: 80px 1fr 90px 80px auto; gap: 8px; margin-bottom: 6px; align-items: center; }
-    .subject-row input, .subject-row select {
+    .form-section {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 2px;
+    }
+    .form-section-line { flex: 1; height: 1px; background: var(--border); }
+    .form-section-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════
+       SUBJECTS TABLE IN FORM
+    ═══════════════════════════════════════ */
+    .subjects-wrap {
       background: var(--surface2);
       border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 14px;
+    }
+    .subjects-header {
+      display: grid;
+      grid-template-columns: 80px 1fr 90px 80px 34px;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding: 0 2px;
+    }
+    .subjects-header span {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .subject-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 90px 80px 34px;
+      gap: 8px;
+      margin-bottom: 7px;
+      align-items: center;
+    }
+    .subject-row input, .subject-row select {
+      background: var(--surface);
+      border: 1px solid var(--border);
       color: var(--text);
-      padding: 7px 10px;
-      border-radius: 6px;
+      padding: 8px 10px;
+      border-radius: 7px;
       font-size: 12px;
       font-family: inherit;
       width: 100%;
+      transition: border-color 0.15s;
+      text-transform: uppercase;
     }
-    .subject-row input:focus, .subject-row select:focus { outline: none; border-color: var(--blue); }
-    .remove-subj { background: none; border: none; color: var(--red); cursor: pointer; font-size: 16px; padding: 4px; }
-    .religion-badge { background: rgba(212,160,23,0.15); color: var(--gold); font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 4px; }
+    .subject-row input:focus, .subject-row select:focus { outline: none; border-color: var(--accent); }
+    .subject-row input[type=number] { text-transform: none; font-family: 'JetBrains Mono', monospace; }
+    .remove-subj {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text3);
+      cursor: pointer;
+      width: 32px; height: 32px;
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+    .remove-subj:hover { background: var(--red-bg); color: var(--red); border-color: var(--red); }
+    .religion-chip {
+      background: rgba(226,185,106,0.12);
+      color: var(--gold);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .subj-name-wrap { position: relative; }
+    .subj-name-wrap .religion-chip {
+      position: absolute;
+      right: 7px; top: 50%;
+      transform: translateY(-50%);
+    }
 
-    /* ── MODAL FOOTER ── */
-    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border); }
+    /* ═══════════════════════════════════════
+       VISIBILITY TOGGLE
+    ═══════════════════════════════════════ */
+    .visibility-toggle {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 14px 16px;
+      cursor: pointer;
+    }
+    .toggle-track {
+      width: 42px; height: 24px;
+      background: var(--border2);
+      border-radius: 999px;
+      position: relative;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .toggle-track.on { background: var(--amber); }
+    .toggle-thumb {
+      width: 18px; height: 18px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px; left: 3px;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .toggle-track.on .toggle-thumb { transform: translateX(18px); }
+    .toggle-label { flex: 1; }
+    .toggle-title { font-size: 13px; font-weight: 600; color: var(--text); }
+    .toggle-desc  { font-size: 11px; color: var(--text3); margin-top: 1px; }
 
-    /* ── TOAST ── */
+    /* ═══════════════════════════════════════
+       MODAL FOOTER
+    ═══════════════════════════════════════ */
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 18px 28px;
+      border-top: 1px solid var(--border);
+      background: var(--surface2);
+      border-radius: 0 0 14px 14px;
+    }
+
+    /* ═══════════════════════════════════════
+       TOAST
+    ═══════════════════════════════════════ */
     #toast {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 14px;
+      bottom: 28px;
+      right: 28px;
+      padding: 13px 20px 13px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
       font-weight: 500;
-      z-index: 999;
+      z-index: 9999;
       transform: translateY(80px);
       opacity: 0;
-      transition: all 0.3s;
-      max-width: 340px;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 360px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow);
     }
     #toast.show { transform: translateY(0); opacity: 1; }
-    #toast.success { background: var(--green); color: #000; }
-    #toast.error   { background: var(--red); color: white; }
-    #toast.info    { background: var(--blue); color: white; }
+    #toast.success { background: #17301e; border: 1px solid #22c55e40; color: var(--green); }
+    #toast.error   { background: #2d1010; border: 1px solid #f0525240; color: var(--red); }
+    #toast.info    { background: #0e1e38; border: 1px solid #4f8ef740; color: var(--accent); }
+    .toast-icon { font-size: 16px; flex-shrink: 0; }
 
-    /* ── CONFIRM DIALOG ── */
+    /* ═══════════════════════════════════════
+       CONFIRM DIALOG
+    ═══════════════════════════════════════ */
     .confirm-overlay {
       display: none;
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(4px);
       z-index: 300;
       align-items: center;
       justify-content: center;
     }
     .confirm-overlay.open { display: flex; }
-    .confirm-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; max-width: 380px; width: 90%; text-align: center; }
-    .confirm-box h3 { font-size: 16px; margin-bottom: 10px; }
-    .confirm-box p { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
-    .confirm-box .actions { justify-content: center; }
+    .confirm-box {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      padding: 32px 28px 24px;
+      max-width: 400px;
+      width: 92%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      animation: modalIn 0.2s ease;
+    }
+    .confirm-icon { font-size: 40px; margin-bottom: 12px; }
+    .confirm-box h3 { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
+    .confirm-box p  { font-size: 13px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: center; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
+    /* ═══════════════════════════════════════
+       EMPTY STATE
+    ═══════════════════════════════════════ */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text3);
+    }
+    .empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state .es-title { font-size: 15px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+    .empty-state .es-sub { font-size: 13px; }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 700px) {
       .sidebar { display: none; }
+      .main { padding: 20px 16px; }
       .form-grid { grid-template-columns: 1fr; }
-      .subject-row { grid-template-columns: 70px 1fr 70px 60px auto; }
+      .subject-row, .subjects-header { grid-template-columns: 70px 1fr 70px 65px 34px; }
+      .modal { border-radius: 12px; }
+      .modal-body { padding: 20px 18px; }
+      .modal-header, .modal-footer { padding: 18px; }
     }
   </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
+<!-- ══════════════════════════════════════════
+     TOPBAR
+══════════════════════════════════════════ -->
 <div class="topbar">
   <div class="topbar-brand">
-    <span>🛡️ Results Admin</span>
-    <span class="badge">ADMIN</span>
+    <div class="brand-icon">🛡️</div>
+    <div>
+      <div class="brand-text">Results Portal <span class="admin-pill">Admin</span></div>
+      <div class="brand-sub">Management Dashboard</div>
+    </div>
   </div>
   <div class="topbar-right">
-    <span class="key-display" id="keyDisplay">key: ••••••••</span>
-    <a href="/" target="_blank" class="btn btn-ghost btn-sm">🌐 Public Site</a>
+    <div class="key-chip" id="keyDisplay">••••••••</div>
+    <a href="/" target="_blank" class="btn btn-ghost btn-sm">↗ Public Site</a>
   </div>
 </div>
 
-<!-- LAYOUT -->
+<!-- ══════════════════════════════════════════
+     LAYOUT
+══════════════════════════════════════════ -->
 <div class="layout">
+
   <!-- SIDEBAR -->
   <nav class="sidebar">
-    <div class="nav-item active" onclick="switchTab('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
-    <div class="nav-item" onclick="switchTab('results')"><span class="nav-icon">📋</span> Results</div>
-    <div class="nav-item" onclick="switchTab('add')"><span class="nav-icon">➕</span> Add Result</div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Overview</div>
+    </div>
+    <div class="nav-item active" onclick="switchTab('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </div>
+
+    <div class="sidebar-section" style="margin-top:18px;">
+      <div class="sidebar-section-label">Data</div>
+    </div>
+    <div class="nav-item" onclick="switchTab('results')">
+      <span class="nav-icon">📋</span> All Results
+    </div>
+    <div class="nav-item" onclick="openAddModal(); switchTab('results')">
+      <span class="nav-icon">➕</span> Add Result
+    </div>
+
+    <div class="sidebar-bottom">
+      <div style="font-size:11px; color:var(--text3); line-height:1.7;">
+        Results Portal Admin<br/>
+        <span style="color:var(--border2);">All data stored in MongoDB</span>
+      </div>
+    </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main">
 
-    <!-- ── DASHBOARD TAB ── -->
+    <!-- ══ DASHBOARD TAB ══ -->
     <div id="tab-dashboard" class="tab active">
-      <h2 style="font-size:20px; margin-bottom:20px;">Dashboard</h2>
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Total Results</div><div class="stat-value blue" id="st-total">–</div></div>
-        <div class="stat-card"><div class="stat-label">Passed</div><div class="stat-value green" id="st-passed">–</div></div>
-        <div class="stat-card"><div class="stat-label">Failed</div><div class="stat-value red" id="st-failed">–</div></div>
-        <div class="stat-card"><div class="stat-label">Hidden</div><div class="stat-value amber" id="st-hidden">–</div></div>
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-subtitle">Overview of all results in the database</div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddModal(); switchTab('results')">➕ Add Result</button>
       </div>
-      <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px; font-size:13px; color:var(--muted); line-height:1.8;">
-        <strong style="color:var(--text); display:block; margin-bottom:8px;">Quick Reference</strong>
-        Admin panel URL: <code style="font-family:'JetBrains Mono',monospace; background:var(--surface2); padding:2px 7px; border-radius:4px;">/admin-panel?key=YOUR_KEY</code><br/>
-        Add new results via <strong style="color:var(--text);">Add Result</strong> tab or the <strong style="color:var(--text);">Results</strong> table.<br/>
-        <strong style="color:var(--amber);">Hidden</strong> results are invisible to the public but stored in the database.<br/>
-        Religion subjects are labelled per student faith (e.g. Islam, Hindu, Christian, Buddhist).
+
+      <div class="stats-grid">
+        <div class="stat-card blue">
+          <div class="stat-top">
+            <div><div class="stat-label">Total Results</div><div class="stat-value blue" id="st-total">—</div></div>
+            <div class="stat-icon blue">📋</div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-top">
+            <div><div class="stat-label">Passed</div><div class="stat-value green" id="st-passed">—</div></div>
+            <div class="stat-icon green">✅</div>
+          </div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-top">
+            <div><div class="stat-label">Failed</div><div class="stat-value red" id="st-failed">—</div></div>
+            <div class="stat-icon red">❌</div>
+          </div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-top">
+            <div><div class="stat-label">Hidden</div><div class="stat-value amber" id="st-hidden">—</div></div>
+            <div class="stat-icon amber">🙈</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div style="font-size:14px; font-weight:700; color:var(--text); margin-bottom:14px;">Quick Reference</div>
+        <div class="info-row-item">
+          <div class="info-dot" style="background:var(--accent)"></div>
+          <span>Admin URL: <span class="code-chip">/admin-panel?key=YOUR_KEY</span></span>
+        </div>
+        <div class="info-row-item">
+          <div class="info-dot" style="background:var(--amber)"></div>
+          <span><strong>Hidden</strong> results are stored but <strong>invisible</strong> to students on the public site</span>
+        </div>
+        <div class="info-row-item">
+          <div class="info-dot" style="background:var(--green)"></div>
+          <span>All text fields are automatically saved in <strong>UPPERCASE</strong></span>
+        </div>
+        <div class="info-row-item">
+          <div class="info-dot" style="background:var(--purple)"></div>
+          <span>Religion subject label is set per student's faith (Islam, Hindu, Christian, Buddhist)</span>
+        </div>
+        <div class="info-row-item">
+          <div class="info-dot" style="background:var(--green)"></div>
+          <span>New boards, years, and examination types appear on the public site <strong>automatically</strong></span>
+        </div>
       </div>
     </div>
 
-    <!-- ── RESULTS TAB ── -->
+    <!-- ══ RESULTS TAB ══ -->
     <div id="tab-results" class="tab">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <h2 style="font-size:20px;">All Results</h2>
-        <button class="btn btn-green" onclick="openAddModal()">➕ Add Result</button>
+      <div class="page-header">
+        <div>
+          <div class="page-title">All Results</div>
+          <div class="page-subtitle" id="resultsSubtitle">Loading…</div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddModal()">➕ Add Result</button>
       </div>
 
       <div class="toolbar">
-        <input type="text" id="searchInput" placeholder="🔍 Search name, roll, reg…" oninput="debounceSearch()" />
+        <div class="search-wrap">
+          <input type="text" id="searchInput" placeholder="Search name, roll no, reg no…" oninput="debounceSearch()" />
+        </div>
         <select id="filterExam" onchange="loadResults(1)">
           <option value="">All Examinations</option>
         </select>
@@ -338,13 +841,11 @@
         <table>
           <thead>
             <tr>
-              <th>Roll No</th>
-              <th>Reg No</th>
-              <th>Name</th>
-              <th>Exam</th>
+              <th>Roll / Reg</th>
+              <th>Student</th>
+              <th>Examination</th>
               <th>Year</th>
               <th>Board</th>
-              <th>Group</th>
               <th>GPA</th>
               <th>Result</th>
               <th>Visibility</th>
@@ -352,187 +853,231 @@
             </tr>
           </thead>
           <tbody id="resultsBody">
-            <tr><td colspan="11" style="text-align:center; color:var(--muted); padding:32px;">Loading…</td></tr>
+            <tr><td colspan="9"><div class="empty-state"><div class="es-icon">⏳</div><div class="es-title">Loading results…</div></div></td></tr>
           </tbody>
         </table>
       </div>
+
       <div class="pagination">
-        <button id="prevBtn" onclick="loadResults(currentPage - 1)" disabled>← Prev</button>
-        <span class="pg-info" id="pgInfo">–</span>
+        <button id="prevBtn" onclick="loadResults(currentPage - 1)" disabled>← Previous</button>
+        <span class="pg-info" id="pgInfo">—</span>
         <button id="nextBtn" onclick="loadResults(currentPage + 1)" disabled>Next →</button>
       </div>
     </div>
 
-    <!-- ── ADD TAB (quick shortcut) ── -->
-    <div id="tab-add" class="tab">
-      <h2 style="font-size:20px; margin-bottom:16px;">Add New Result</h2>
-      <p style="color:var(--muted); font-size:14px;">Opens the result entry form.</p>
-      <br/>
-      <button class="btn btn-green" onclick="openAddModal(); switchTab('results')">➕ Open Add Result Form</button>
-    </div>
+  </div><!-- /main -->
+</div><!-- /layout -->
 
-  </div>
-</div>
 
-<!-- ── RESULT MODAL ── -->
+<!-- ══════════════════════════════════════════
+     RESULT MODAL
+══════════════════════════════════════════ -->
 <div class="modal-overlay" id="resultModal">
   <div class="modal">
-    <div class="modal-title">
-      <span id="modalTitle">Add Result</span>
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle">Add New Result</div>
+        <div class="modal-title-sub">All text fields will be saved in UPPERCASE automatically</div>
+      </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="form-grid" id="modalForm">
 
-      <div class="form-section-title" style="border-top:none; padding-top:0;">📝 Basic Information</div>
+    <div class="modal-body">
+      <div class="form-grid">
 
-      <div class="form-group">
-        <label>Roll No *</label>
-        <input type="text" id="f-rollNo" placeholder="e.g. 579209" />
-      </div>
-      <div class="form-group">
-        <label>Reg No *</label>
-        <input type="text" id="f-regNo" placeholder="e.g. 2211120839" />
-      </div>
-      <div class="form-group">
-        <label>Student Name *</label>
-        <input type="text" id="f-name" placeholder="Full name in CAPS" />
-      </div>
-      <div class="form-group">
-        <label>Father's Name</label>
-        <input type="text" id="f-fatherName" />
-      </div>
-      <div class="form-group">
-        <label>Mother's Name</label>
-        <input type="text" id="f-motherName" />
-      </div>
-      <div class="form-group">
-        <label>Date of Birth</label>
-        <input type="text" id="f-dateOfBirth" placeholder="DD-MM-YY" />
-      </div>
-
-      <div class="form-section-title">🏫 Examination Details</div>
-
-      <div class="form-group">
-        <label>Examination *</label>
-        <input type="text" id="f-examination" list="examList" placeholder="e.g. SSC/Dakhil/Equivalent" />
-        <datalist id="examList"></datalist>
-      </div>
-      <div class="form-group">
-        <label>Year *</label>
-        <input type="text" id="f-year" list="yearList" placeholder="e.g. 2025" />
-        <datalist id="yearList"></datalist>
-      </div>
-      <div class="form-group">
-        <label>Board *</label>
-        <input type="text" id="f-board" list="boardList" placeholder="e.g. Dhaka" />
-        <datalist id="boardList"></datalist>
-      </div>
-      <div class="form-group">
-        <label>Group</label>
-        <input type="text" id="f-group" placeholder="e.g. SCIENCE / BUSINESS / HUMANITIES" />
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select id="f-type">
-          <option value="REGULAR">REGULAR</option>
-          <option value="IRREGULAR">IRREGULAR</option>
-          <option value="IMPROVEMENT">IMPROVEMENT</option>
-          <option value="PRIVATE">PRIVATE</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Institute</label>
-        <input type="text" id="f-institute" />
-      </div>
-
-      <div class="form-section-title">📊 Result</div>
-
-      <div class="form-group">
-        <label>Result *</label>
-        <select id="f-result">
-          <option value="PASS">PASS</option>
-          <option value="FAIL">FAIL</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>GPA</label>
-        <input type="text" id="f-gpa" placeholder="e.g. 5.00" />
-      </div>
-
-      <div class="form-section-title">☪️ Religion Subject</div>
-
-      <div class="form-group form-full">
-        <label>Religion Subject Label (student's faith)</label>
-        <select id="f-religionLabel">
-          <option value="ISLAM AND MORAL EDUCATION">Islam – ISLAM AND MORAL EDUCATION</option>
-          <option value="HINDU RELIGION AND MORAL EDUCATION">Hindu – HINDU RELIGION AND MORAL EDUCATION</option>
-          <option value="CHRISTIAN RELIGION AND MORAL EDUCATION">Christian – CHRISTIAN RELIGION AND MORAL EDUCATION</option>
-          <option value="BUDDHIST RELIGION AND MORAL EDUCATION">Buddhist – BUDDHIST RELIGION AND MORAL EDUCATION</option>
-          <option value="RELIGION AND MORAL EDUCATION">Other – RELIGION AND MORAL EDUCATION</option>
-        </select>
-      </div>
-
-      <div class="form-section-title">📚 Subjects</div>
-
-      <div class="form-full">
-        <div class="subjects-header">
-          <span>Code</span><span>Subject Name</span><span>Marks</span><span>Grade</span><span></span>
+        <!-- ── SECTION: Student Info ── -->
+        <div class="form-section">
+          <span class="form-section-label">👤 Student Information</span>
+          <div class="form-section-line"></div>
         </div>
-        <div id="subjectsContainer"></div>
-        <button class="btn btn-ghost btn-sm" style="margin-top:8px;" onclick="addSubjectRow()">+ Add Subject</button>
-      </div>
 
-      <div class="form-section-title">⚙️ Visibility</div>
+        <div class="form-group">
+          <label>Roll No <span class="req">*</span></label>
+          <input type="text" id="f-rollNo" placeholder="e.g. 579209" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Registration No <span class="req">*</span></label>
+          <input type="text" id="f-regNo" placeholder="e.g. 2211120839" autocomplete="off" />
+        </div>
+        <div class="form-group form-full">
+          <label>Student Full Name <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="Full name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Father's Name</label>
+          <input type="text" id="f-fatherName" placeholder="Father's full name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Mother's Name</label>
+          <input type="text" id="f-motherName" placeholder="Mother's full name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="text" id="f-dateOfBirth" placeholder="DD-MM-YY" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Institute</label>
+          <input type="text" id="f-institute" placeholder="School / College name" autocomplete="off" />
+        </div>
 
-      <div class="form-group form-full" style="flex-direction:row; align-items:center; gap:10px;">
-        <input type="checkbox" id="f-hidden" style="width:16px; height:16px; accent-color:var(--amber);" />
-        <label for="f-hidden" style="font-size:13px; text-transform:none; letter-spacing:0; color:var(--text); cursor:pointer;">
-          Hide this result from public (student cannot see it when searching)
-        </label>
-      </div>
+        <!-- ── SECTION: Exam Details ── -->
+        <div class="form-section">
+          <span class="form-section-label">🏫 Examination Details</span>
+          <div class="form-section-line"></div>
+        </div>
 
-    </div>
+        <div class="form-group">
+          <label>Examination <span class="req">*</span></label>
+          <input type="text" id="f-examination" list="examList" placeholder="e.g. SSC/Dakhil/Equivalent" autocomplete="off" />
+          <datalist id="examList"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Year <span class="req">*</span></label>
+          <input type="text" id="f-year" list="yearList" placeholder="e.g. 2025" autocomplete="off" />
+          <datalist id="yearList"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Board <span class="req">*</span></label>
+          <input type="text" id="f-board" list="boardList" placeholder="e.g. Dhaka" autocomplete="off" />
+          <datalist id="boardList"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Group</label>
+          <input type="text" id="f-group" placeholder="SCIENCE / BUSINESS / HUMANITIES" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select id="f-type">
+            <option value="REGULAR">REGULAR</option>
+            <option value="IRREGULAR">IRREGULAR</option>
+            <option value="IMPROVEMENT">IMPROVEMENT</option>
+            <option value="PRIVATE">PRIVATE</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>GPA</label>
+          <input type="text" id="f-gpa" placeholder="e.g. 5.00" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Result <span class="req">*</span></label>
+          <select id="f-result">
+            <option value="PASS">✅ PASS</option>
+            <option value="FAIL">❌ FAIL</option>
+          </select>
+        </div>
+
+        <!-- ── SECTION: Religion ── -->
+        <div class="form-section">
+          <span class="form-section-label">☪️ Religion Subject</span>
+          <div class="form-section-line"></div>
+        </div>
+
+        <div class="form-group form-full">
+          <label>Student's Faith — sets religion subject label</label>
+          <select id="f-religionLabel">
+            <option value="ISLAM AND MORAL EDUCATION">☪️  Islam — ISLAM AND MORAL EDUCATION</option>
+            <option value="HINDU RELIGION AND MORAL EDUCATION">🕉️  Hindu — HINDU RELIGION AND MORAL EDUCATION</option>
+            <option value="CHRISTIAN RELIGION AND MORAL EDUCATION">✝️  Christian — CHRISTIAN RELIGION AND MORAL EDUCATION</option>
+            <option value="BUDDHIST RELIGION AND MORAL EDUCATION">☸️  Buddhist — BUDDHIST RELIGION AND MORAL EDUCATION</option>
+            <option value="RELIGION AND MORAL EDUCATION">🌐  Other — RELIGION AND MORAL EDUCATION</option>
+          </select>
+        </div>
+
+        <!-- ── SECTION: Subjects ── -->
+        <div class="form-section">
+          <span class="form-section-label">📚 Subjects & Marks</span>
+          <div class="form-section-line"></div>
+        </div>
+
+        <div class="form-full">
+          <div class="subjects-wrap">
+            <div class="subjects-header">
+              <span>Code</span>
+              <span>Subject Name</span>
+              <span>Marks</span>
+              <span>Grade</span>
+              <span></span>
+            </div>
+            <div id="subjectsContainer"></div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addSubjectRow()">+ Add Subject Row</button>
+          </div>
+        </div>
+
+        <!-- ── SECTION: Visibility ── -->
+        <div class="form-section">
+          <span class="form-section-label">👁 Visibility</span>
+          <div class="form-section-line"></div>
+        </div>
+
+        <div class="form-full">
+          <div class="visibility-toggle" onclick="toggleHideCheck()">
+            <div class="toggle-track" id="toggleTrack">
+              <div class="toggle-thumb"></div>
+            </div>
+            <div class="toggle-label">
+              <div class="toggle-title" id="toggleTitle">Result is Visible to Public</div>
+              <div class="toggle-desc" id="toggleDesc">Students can find this result when searching</div>
+            </div>
+          </div>
+          <input type="checkbox" id="f-hidden" style="display:none;" />
+        </div>
+
+      </div><!-- /form-grid -->
+    </div><!-- /modal-body -->
+
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-green" onclick="saveResult()" id="saveBtn">💾 Save Result</button>
+      <button class="btn btn-primary" onclick="saveResult()" id="saveBtn">💾 Save Result</button>
     </div>
   </div>
 </div>
 
-<!-- ── CONFIRM DIALOG ── -->
+
+<!-- ══════════════════════════════════════════
+     CONFIRM DELETE DIALOG
+══════════════════════════════════════════ -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
-    <h3 id="confirmTitle">Confirm Delete</h3>
-    <p id="confirmMsg">Are you sure you want to delete this result? This cannot be undone.</p>
-    <div class="actions">
+    <div class="confirm-icon">🗑️</div>
+    <h3>Delete Result?</h3>
+    <p id="confirmMsg">Are you sure? This action cannot be undone.</p>
+    <div class="confirm-actions">
       <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
-      <button class="btn btn-red" id="confirmOk" onclick="">Yes, Delete</button>
+      <button class="btn btn-red" id="confirmOk">Yes, Delete</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast"></div>
+<div id="toast"><span class="toast-icon" id="toastIcon"></span><span id="toastMsg"></span></div>
+
 
 <script>
-// ── STATE ────────────────────────────────────
-const params      = new URLSearchParams(location.search);
-const ADMIN_KEY   = params.get('key') || '';
-let currentPage   = 1;
-let totalPages    = 1;
-let editingId     = null;
-let searchTimer   = null;
-let meta          = { boards: [], years: [], examinations: [] };
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const params    = new URLSearchParams(location.search);
+const ADMIN_KEY = params.get('key') || '';
+let currentPage = 1;
+let editingId   = null;
+let searchTimer = null;
+let meta        = { boards: [], years: [], examinations: [] };
+let hiddenState = false;
 
 // Show masked key
-document.getElementById('keyDisplay').textContent = 'key: ' + (ADMIN_KEY ? ADMIN_KEY.slice(0,4) + '••••' : 'none');
+document.getElementById('keyDisplay').textContent =
+  ADMIN_KEY ? ADMIN_KEY.slice(0, 4) + '••••' : 'no key';
 
-// ── HELPERS ──────────────────────────────────
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
 function toast(msg, type = 'success') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  document.getElementById('toastIcon').textContent = icons[type] || '';
+  document.getElementById('toastMsg').textContent  = msg;
   const el = document.getElementById('toast');
-  el.textContent = msg;
   el.className = 'show ' + type;
-  setTimeout(() => { el.className = ''; }, 3200);
+  setTimeout(() => { el.className = ''; }, 3400);
 }
 
 async function api(path, opts = {}) {
@@ -547,37 +1092,46 @@ async function api(path, opts = {}) {
   return data;
 }
 
+// Auto-uppercase helper — applied on save, not just CSS
+function up(val) {
+  if (typeof val !== 'string') return val;
+  // Preserve DOB and numeric strings
+  return val.trim().toUpperCase();
+}
+
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.textContent.toLowerCase().includes(name === 'dashboard' ? 'dash' : name === 'results' ? 'result' : 'add')) {
-      n.classList.add('active');
-    }
+    const txt = n.textContent.toLowerCase();
+    if (name === 'dashboard' && txt.includes('dashboard')) n.classList.add('active');
+    if (name === 'results'   && txt.includes('all result')) n.classList.add('active');
   });
-  if (name === 'results') loadResults(1);
+  if (name === 'results')   loadResults(1);
   if (name === 'dashboard') loadStats();
 }
 
-// ── INIT ─────────────────────────────────────
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
 async function init() {
-  await loadMeta();
-  await loadStats();
+  await Promise.all([loadMeta(), loadStats()]);
 }
 
 async function loadMeta() {
   try {
     const d = await api('/meta');
     meta = d.data;
-    // Populate filter selects
-    const filterExam  = document.getElementById('filterExam');
-    const filterYear  = document.getElementById('filterYear');
-    const filterBoard = document.getElementById('filterBoard');
-    meta.examinations.forEach(e => filterExam.innerHTML  += `<option value="${e}">${e}</option>`);
-    meta.years.forEach(y        => filterYear.innerHTML  += `<option value="${y}">${y}</option>`);
-    meta.boards.forEach(b       => filterBoard.innerHTML += `<option value="${b}">${b}</option>`);
-    // Populate datalists
+    const fExam  = document.getElementById('filterExam');
+    const fYear  = document.getElementById('filterYear');
+    const fBoard = document.getElementById('filterBoard');
+    fExam.innerHTML  = '<option value="">All Examinations</option>';
+    fYear.innerHTML  = '<option value="">All Years</option>';
+    fBoard.innerHTML = '<option value="">All Boards</option>';
+    meta.examinations.forEach(e => fExam.innerHTML  += `<option value="${e}">${e}</option>`);
+    meta.years.forEach(y        => fYear.innerHTML  += `<option value="${y}">${y}</option>`);
+    meta.boards.forEach(b       => fBoard.innerHTML += `<option value="${b}">${b}</option>`);
     document.getElementById('examList').innerHTML  = meta.examinations.map(e => `<option value="${e}">`).join('');
     document.getElementById('yearList').innerHTML  = meta.years.map(y => `<option value="${y}">`).join('');
     document.getElementById('boardList').innerHTML = meta.boards.map(b => `<option value="${b}">`).join('');
@@ -594,13 +1148,15 @@ async function loadStats() {
   } catch(e) { toast(e.message, 'error'); }
 }
 
-// ── RESULTS TABLE ─────────────────────────────
+// ══════════════════════════════════════════
+// RESULTS TABLE
+// ══════════════════════════════════════════
 async function loadResults(page = 1) {
   currentPage = page;
-  const search  = document.getElementById('searchInput').value.trim();
-  const exam    = document.getElementById('filterExam').value;
-  const year    = document.getElementById('filterYear').value;
-  const board   = document.getElementById('filterBoard').value;
+  const search = document.getElementById('searchInput').value.trim();
+  const exam   = document.getElementById('filterExam').value;
+  const year   = document.getElementById('filterYear').value;
+  const board  = document.getElementById('filterBoard').value;
 
   const qs = new URLSearchParams({ page, limit: 20 });
   if (search) qs.set('search', search);
@@ -609,131 +1165,185 @@ async function loadResults(page = 1) {
   if (board)  qs.set('board', board);
 
   const tbody = document.getElementById('resultsBody');
-  tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--muted); padding:32px;">Loading…</td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="es-icon">⏳</div><div class="es-title">Loading…</div></div></td></tr>`;
 
   try {
     const d = await api(`/results?${qs}`);
-    totalPages = Math.ceil(d.total / 20) || 1;
-    document.getElementById('pgInfo').textContent = `Page ${page} of ${totalPages} (${d.total} total)`;
+    const totalPages = Math.ceil(d.total / 20) || 1;
+    document.getElementById('pgInfo').textContent =
+      `Page ${page} of ${totalPages} — ${d.total} result${d.total !== 1 ? 's' : ''}`;
+    document.getElementById('resultsSubtitle').textContent =
+      `${d.total} result${d.total !== 1 ? 's' : ''} found`;
     document.getElementById('prevBtn').disabled = page <= 1;
     document.getElementById('nextBtn').disabled = page >= totalPages;
 
     if (!d.data.length) {
-      tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--muted); padding:32px;">No results found.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+        <div class="es-icon">🔍</div>
+        <div class="es-title">No results found</div>
+        <div class="es-sub">Try adjusting your search or filters</div>
+      </div></td></tr>`;
       return;
     }
 
     tbody.innerHTML = d.data.map(r => `
       <tr>
-        <td class="mono">${r.rollNo}</td>
-        <td class="mono">${r.regNo}</td>
-        <td><strong>${r.name}</strong><br/><span style="color:var(--muted); font-size:11px;">${r.fatherName || ''}</span></td>
-        <td style="max-width:160px;">${r.examination}</td>
-        <td>${r.year}</td>
+        <td>
+          <div class="mono">${r.rollNo}</div>
+          <div class="mono" style="color:var(--text3); font-size:11px;">${r.regNo}</div>
+        </td>
+        <td>
+          <div class="cell-name">${r.name}</div>
+          <div class="cell-sub">${r.fatherName || '—'}</div>
+        </td>
+        <td style="max-width:180px; font-size:12px;">${r.examination}</td>
+        <td><span class="mono" style="color:var(--text);">${r.year}</span></td>
         <td>${r.board}</td>
-        <td>${r.group || '–'}</td>
-        <td>${r.gpa || '–'}</td>
-        <td><span class="badge-${r.result === 'PASS' ? 'pass' : 'fail'}">${r.result}</span></td>
-        <td><span class="badge-${r.hidden ? 'hidden' : 'visible'}">${r.hidden ? '🙈 Hidden' : '👁 Visible'}</span></td>
+        <td><span class="mono" style="color:var(--accent);">${r.gpa || '—'}</span></td>
+        <td><span class="badge badge-${r.result === 'PASS' ? 'pass' : 'fail'}">${r.result === 'PASS' ? '✅' : '❌'} ${r.result}</span></td>
+        <td>
+          <span class="badge ${r.hidden ? 'badge-hidden' : 'badge-visible'}">
+            ${r.hidden ? '🙈 Hidden' : '👁 Visible'}
+          </span>
+        </td>
         <td>
           <div class="actions">
-            <button class="btn btn-ghost btn-sm" onclick="openEditModal('${r._id}')">✏️</button>
-            <button class="btn btn-amber btn-sm" onclick="toggleHide('${r._id}')" title="Toggle visibility">👁</button>
-            <button class="btn btn-red btn-sm" onclick="confirmDelete('${r._id}', '${r.name.replace(/'/g,"\\'")}')">🗑️</button>
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="openEditModal('${r._id}')" title="Edit">✏️</button>
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleHideById('${r._id}')" title="${r.hidden ? 'Make Visible' : 'Hide'}">
+              ${r.hidden ? '👁' : '🙈'}
+            </button>
+            <button class="btn btn-red btn-icon btn-sm" onclick="confirmDelete('${r._id}', '${r.name.replace(/'/g, "\\'")}')" title="Delete">🗑️</button>
           </div>
         </td>
       </tr>
     `).join('');
   } catch(e) {
-    tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; color:var(--red); padding:32px;">${e.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+      <div class="es-icon">⚠️</div>
+      <div class="es-title" style="color:var(--red);">${e.message}</div>
+    </div></td></tr>`;
   }
 }
 
 function debounceSearch() {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => loadResults(1), 400);
+  searchTimer = setTimeout(() => loadResults(1), 380);
 }
 
-// ── SUBJECTS ─────────────────────────────────
+// ══════════════════════════════════════════
+// VISIBILITY TOGGLE (in modal)
+// ══════════════════════════════════════════
+function setHiddenState(isHidden) {
+  hiddenState = isHidden;
+  const track  = document.getElementById('toggleTrack');
+  const title  = document.getElementById('toggleTitle');
+  const desc   = document.getElementById('toggleDesc');
+  const check  = document.getElementById('f-hidden');
+  check.checked = isHidden;
+  if (isHidden) {
+    track.classList.add('on');
+    title.textContent = '🙈 Result is Hidden from Public';
+    desc.textContent  = 'Students cannot find this result when searching';
+    title.style.color = 'var(--amber)';
+  } else {
+    track.classList.remove('on');
+    title.textContent = '👁 Result is Visible to Public';
+    desc.textContent  = 'Students can find this result when searching';
+    title.style.color = 'var(--text)';
+  }
+}
+
+function toggleHideCheck() {
+  setHiddenState(!hiddenState);
+}
+
+// ══════════════════════════════════════════
+// SUBJECTS
+// ══════════════════════════════════════════
 const GRADES = ['A+','A','A-','B','C','D','F'];
 
 function addSubjectRow(sub = {}) {
-  const container = document.getElementById('subjectsContainer');
-  const div = document.createElement('div');
-  div.className = 'subject-row';
-  const isReligion = sub.name && sub.name.toLowerCase().includes('religion');
-  div.innerHTML = `
-    <input type="text" placeholder="Code" value="${sub.code || ''}" class="subj-code" />
-    <div style="position:relative;">
-      <input type="text" placeholder="Subject Name" value="${sub.name || ''}" class="subj-name" style="width:100%;" />
-      ${isReligion ? '<span class="religion-badge" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);">✦</span>' : ''}
+  const container = document.createElement('div');
+  container.className = 'subject-row';
+  const isReligion = (sub.name || '').toLowerCase().includes('religion');
+  container.innerHTML = `
+    <input type="text"   class="subj-code"  placeholder="Code"  value="${sub.code  || ''}" />
+    <div class="subj-name-wrap">
+      <input type="text" class="subj-name"  placeholder="Subject Name" value="${sub.name || ''}" style="width:100%;" />
+      ${isReligion ? '<span class="religion-chip">RELIGION</span>' : ''}
     </div>
-    <input type="number" placeholder="Marks" value="${sub.marks != null ? sub.marks : ''}" class="subj-marks" min="0" max="100" />
+    <input type="number" class="subj-marks" placeholder="—" value="${sub.marks != null ? sub.marks : ''}" min="0" max="100" />
     <select class="subj-grade">
       ${GRADES.map(g => `<option value="${g}" ${g === (sub.grade || 'A') ? 'selected' : ''}>${g}</option>`).join('')}
     </select>
-    <button class="remove-subj" onclick="this.closest('.subject-row').remove()">✕</button>
+    <button class="remove-subj" onclick="this.closest('.subject-row').remove()" title="Remove">✕</button>
   `;
-  container.appendChild(div);
+  document.getElementById('subjectsContainer').appendChild(container);
 }
 
 function getSubjects() {
   return [...document.querySelectorAll('.subject-row')].map(row => ({
-    code:  row.querySelector('.subj-code').value.trim(),
-    name:  row.querySelector('.subj-name').value.trim(),
+    code:  up(row.querySelector('.subj-code').value),
+    name:  up(row.querySelector('.subj-name').value),
     marks: row.querySelector('.subj-marks').value !== '' ? Number(row.querySelector('.subj-marks').value) : null,
     grade: row.querySelector('.subj-grade').value
   })).filter(s => s.code && s.name);
 }
 
-// ── MODAL ─────────────────────────────────────
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+const DEFAULT_SUBJECTS = [
+  { code: '101', name: 'BANGLA', grade: 'A' },
+  { code: '107', name: 'ENGLISH', grade: 'A' },
+  { code: '109', name: 'MATHEMATICS', grade: 'A' },
+  { code: '110', name: 'INFORMATION & COMMUNICATION TECHNOLOGY', grade: 'A' },
+  { code: '127', name: 'BANGLADESH & WORLD IDENTITY', grade: 'A' },
+  { code: '136', name: 'PHYSICAL EDUCATION & HEALTH', grade: 'A' },
+];
+
 function openAddModal() {
   editingId = null;
   document.getElementById('modalTitle').textContent = 'Add New Result';
-  document.getElementById('saveBtn').textContent = '💾 Save Result';
+  document.getElementById('saveBtn').textContent    = '💾 Save Result';
   clearForm();
-  // Pre-fill with default common subjects
-  ['101|BANGLA','107|ENGLISH','109|MATHEMATICS'].forEach(s => {
-    const [code, name] = s.split('|');
-    addSubjectRow({ code, name, grade: 'A' });
-  });
-  // Add religion subject from selected label
-  syncReligionSubject();
+  DEFAULT_SUBJECTS.forEach(s => addSubjectRow(s));
+  // Add religion subject
+  const label = document.getElementById('f-religionLabel').value;
+  addSubjectRow({ code: '111', name: label, grade: 'A' });
+  setHiddenState(false);
   document.getElementById('resultModal').classList.add('open');
 }
 
 async function openEditModal(id) {
   editingId = id;
   document.getElementById('modalTitle').textContent = 'Edit Result';
-  document.getElementById('saveBtn').textContent = '💾 Update Result';
+  document.getElementById('saveBtn').textContent    = '💾 Update Result';
   clearForm();
   try {
     const d = await api(`/results/${id}`);
     const r = d.data;
-    document.getElementById('f-rollNo').value     = r.rollNo || '';
-    document.getElementById('f-regNo').value      = r.regNo || '';
-    document.getElementById('f-name').value       = r.name || '';
-    document.getElementById('f-fatherName').value = r.fatherName || '';
-    document.getElementById('f-motherName').value = r.motherName || '';
-    document.getElementById('f-dateOfBirth').value= r.dateOfBirth || '';
-    document.getElementById('f-examination').value= r.examination || '';
-    document.getElementById('f-year').value       = r.year || '';
-    document.getElementById('f-board').value      = r.board || '';
-    document.getElementById('f-group').value      = r.group || '';
-    document.getElementById('f-type').value       = r.type || 'REGULAR';
-    document.getElementById('f-institute').value  = r.institute || '';
-    document.getElementById('f-result').value     = r.result || 'PASS';
-    document.getElementById('f-gpa').value        = r.gpa || '';
-    document.getElementById('f-hidden').checked   = r.hidden || false;
+    document.getElementById('f-rollNo').value      = r.rollNo      || '';
+    document.getElementById('f-regNo').value       = r.regNo       || '';
+    document.getElementById('f-name').value        = r.name        || '';
+    document.getElementById('f-fatherName').value  = r.fatherName  || '';
+    document.getElementById('f-motherName').value  = r.motherName  || '';
+    document.getElementById('f-dateOfBirth').value = r.dateOfBirth || '';
+    document.getElementById('f-examination').value = r.examination || '';
+    document.getElementById('f-year').value        = r.year        || '';
+    document.getElementById('f-board').value       = r.board       || '';
+    document.getElementById('f-group').value       = r.group       || '';
+    document.getElementById('f-type').value        = r.type        || 'REGULAR';
+    document.getElementById('f-institute').value   = r.institute   || '';
+    document.getElementById('f-result').value      = r.result      || 'PASS';
+    document.getElementById('f-gpa').value         = r.gpa         || '';
+    setHiddenState(r.hidden || false);
     // Religion label
-    const relLabel = document.getElementById('f-religionLabel');
     if (r.religionSubjectLabel) {
-      // try to match existing option
-      [...relLabel.options].forEach(o => {
-        if (o.value === r.religionSubjectLabel) o.selected = true;
-      });
+      const sel = document.getElementById('f-religionLabel');
+      [...sel.options].forEach(o => { if (o.value === r.religionSubjectLabel) o.selected = true; });
     }
-    r.subjects.forEach(s => addSubjectRow(s));
+    (r.subjects || []).forEach(s => addSubjectRow(s));
     document.getElementById('resultModal').classList.add('open');
   } catch(e) { toast(e.message, 'error'); }
 }
@@ -750,17 +1360,13 @@ function clearForm() {
   });
   document.getElementById('f-type').value   = 'REGULAR';
   document.getElementById('f-result').value = 'PASS';
-  document.getElementById('f-hidden').checked = false;
   document.getElementById('subjectsContainer').innerHTML = '';
+  setHiddenState(false);
 }
 
-function syncReligionSubject() {
-  // Add a default religion subject row based on selected label
-  const label = document.getElementById('f-religionLabel').value;
-  addSubjectRow({ code: '111', name: label, grade: 'A' });
-}
-
-// ── SAVE ─────────────────────────────────────
+// ══════════════════════════════════════════
+// SAVE — uppercase enforced in JS too
+// ══════════════════════════════════════════
 async function saveResult() {
   const rollNo = document.getElementById('f-rollNo').value.trim();
   const regNo  = document.getElementById('f-regNo').value.trim();
@@ -768,28 +1374,37 @@ async function saveResult() {
   const exam   = document.getElementById('f-examination').value.trim();
   const year   = document.getElementById('f-year').value.trim();
   const board  = document.getElementById('f-board').value.trim();
+
   if (!rollNo || !regNo || !name || !exam || !year || !board) {
-    toast('Roll No, Reg No, Name, Exam, Year, Board are required.', 'error'); return;
+    toast('Roll No, Reg No, Name, Exam, Year, Board are required.', 'error');
+    return;
   }
+
   const body = {
-    rollNo, regNo, name, exam,
-    fatherName: document.getElementById('f-fatherName').value.trim(),
-    motherName:  document.getElementById('f-motherName').value.trim(),
-    dateOfBirth: document.getElementById('f-dateOfBirth').value.trim(),
-    examination: exam,
-    year, board,
-    group:       document.getElementById('f-group').value.trim(),
-    type:        document.getElementById('f-type').value,
-    institute:   document.getElementById('f-institute').value.trim(),
-    result:      document.getElementById('f-result').value,
-    gpa:         document.getElementById('f-gpa').value.trim(),
-    hidden:      document.getElementById('f-hidden').checked,
+    rollNo:       rollNo.toUpperCase(),
+    regNo:        regNo.toUpperCase(),
+    name:         up(name),
+    fatherName:   up(document.getElementById('f-fatherName').value),
+    motherName:   up(document.getElementById('f-motherName').value),
+    dateOfBirth:  document.getElementById('f-dateOfBirth').value.trim(),  // keep as-is
+    examination:  up(exam),
+    year:         year.trim(),
+    board:        up(board),
+    group:        up(document.getElementById('f-group').value),
+    type:         document.getElementById('f-type').value,
+    institute:    up(document.getElementById('f-institute').value),
+    result:       document.getElementById('f-result').value,
+    gpa:          document.getElementById('f-gpa').value.trim(),
+    hidden:       document.getElementById('f-hidden').checked,
     religionSubjectLabel: document.getElementById('f-religionLabel').value,
-    subjects:    getSubjects()
+    subjects:     getSubjects()
   };
 
   try {
-    document.getElementById('saveBtn').textContent = '⏳ Saving…';
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '⏳ Saving…';
+    btn.disabled    = true;
+
     if (editingId) {
       await api(`/results/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
       toast('Result updated successfully!');
@@ -797,19 +1412,24 @@ async function saveResult() {
       await api('/results', { method: 'POST', body: JSON.stringify(body) });
       toast('Result added successfully!');
     }
+
     closeModal();
     loadResults(currentPage);
     loadStats();
-    loadMeta(); // refresh meta in case new board/year/exam was added
+    loadMeta();
   } catch(e) {
     toast(e.message, 'error');
   } finally {
-    document.getElementById('saveBtn').textContent = editingId ? '💾 Update Result' : '💾 Save Result';
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = editingId ? '💾 Update Result' : '💾 Save Result';
+    btn.disabled    = false;
   }
 }
 
-// ── TOGGLE HIDE ───────────────────────────────
-async function toggleHide(id) {
+// ══════════════════════════════════════════
+// TOGGLE HIDE (from table)
+// ══════════════════════════════════════════
+async function toggleHideById(id) {
   try {
     const d = await api(`/results/${id}/toggle-hide`, { method: 'PATCH' });
     toast(d.hidden ? '🙈 Result hidden from public.' : '👁 Result is now visible.', 'info');
@@ -818,11 +1438,14 @@ async function toggleHide(id) {
   } catch(e) { toast(e.message, 'error'); }
 }
 
-// ── DELETE ────────────────────────────────────
+// ══════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════
 let deleteId = null;
 function confirmDelete(id, name) {
   deleteId = id;
-  document.getElementById('confirmMsg').textContent = `Delete result for "${name}"? This cannot be undone.`;
+  document.getElementById('confirmMsg').textContent =
+    `Delete result for "${name}"? This action cannot be undone.`;
   document.getElementById('confirmOverlay').classList.add('open');
 }
 function closeConfirm() {
@@ -840,18 +1463,23 @@ document.getElementById('confirmOk').onclick = async () => {
   } catch(e) { toast(e.message, 'error'); closeConfirm(); }
 };
 
-// ── RELIGION LABEL CHANGE ─────────────────────
+// ══════════════════════════════════════════
+// RELIGION LABEL SYNC
+// ══════════════════════════════════════════
 document.getElementById('f-religionLabel').addEventListener('change', () => {
-  // Update any existing religion subject rows in the form
   const label = document.getElementById('f-religionLabel').value;
   document.querySelectorAll('.subj-name').forEach(input => {
-    if (input.value.toLowerCase().includes('religion') || input.value.toLowerCase().includes('moral')) {
+    const v = input.value.toLowerCase();
+    if (v.includes('religion') || v.includes('moral') || v.includes('islam') ||
+        v.includes('hindu') || v.includes('christian') || v.includes('buddhist')) {
       input.value = label;
     }
   });
 });
 
-// ── BOOT ─────────────────────────────────────
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
 init();
 </script>
 </body>
