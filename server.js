@@ -15,6 +15,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'info.html'));
+});
+
 app.get('/dl', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'dl.html'));
 });
@@ -35,7 +39,7 @@ app.get('/admin-panel', (req, res) => {
 });
 
 // ── Public frontend ──────────────────────────
-app.get('/', (req, res) => {
+app.get('result', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
