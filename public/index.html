@@ -45,124 +45,96 @@
     }
 
     /* ════════════════════════════════
-       HEADER — Official Board Style
+       HEADER
     ════════════════════════════════ */
     header {
-      background: white;
-      border-bottom: 3px solid var(--green);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      background: linear-gradient(160deg, #00472f 0%, var(--green) 45%, #00563f 100%);
+      position: relative;
+      overflow: hidden;
     }
-
-    /* Top strip — light gray like official site */
-    .header-top-strip {
-      background: #f5f5f5;
-      border-bottom: 1px solid #ddd;
-      padding: 5px 24px;
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 110% 50%, rgba(212,160,23,0.10) 0%, transparent 70%),
+        url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M40 0L80 80H0z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    .header-top {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 7px 24px;
       display: flex;
-      justify-content: flex-end;
-      gap: 20px;
+      justify-content: center;
+      gap: 28px;
+      position: relative;
     }
     .header-top-item {
       font-size: 11px;
-      color: #555;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.3px;
       display: flex;
       align-items: center;
       gap: 5px;
     }
-    .header-top-item span { color: #333; font-weight: 500; }
+    .header-top-item span { color: rgba(255,255,255,0.9); }
 
-    /* Logo row — matching official layout */
-    .header-logo-row {
-      display: flex;
-      align-items: stretch;
-      max-width: 100%;
-    }
-
-    /* Left white panel with emblem */
-    .header-emblem-panel {
-      background: #fff;
-      padding: 14px 22px;
+    .header-main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 22px 24px 26px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      border-right: 1px solid #e0e0e0;
-      min-width: 120px;
-    }
-
-    /* SVG Bangladesh Emblem */
-    .emblem-svg {
-      width: 72px;
-      height: 72px;
-    }
-
-    /* Right green panel */
-    .header-title-panel {
-      background: linear-gradient(180deg, #2e8b45 0%, #1a6e35 100%);
-      flex: 1;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: stretch;
+      gap: 22px;
       position: relative;
-      overflow: hidden;
-    }
-    .header-title-panel::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 0; bottom: 0;
-      width: 80px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04));
     }
 
-    /* "Ministry of Education" bar */
-    .header-ministry-bar {
-      background: rgba(255,255,255,0.15);
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      padding: 8px 22px;
-    }
-    .header-ministry-text {
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-
-    /* Main title bar */
-    .header-board-bar {
-      padding: 10px 22px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .header-board-title {
-      color: #fff;
-      font-size: clamp(14px, 2.2vw, 19px);
-      font-weight: 800;
-      letter-spacing: -0.2px;
-      line-height: 1.3;
-    }
-    .header-board-sub {
-      color: rgba(255,255,255,0.75);
-      font-size: 11.5px;
-      margin-top: 3px;
-      font-style: italic;
-    }
-
-    /* Official website label */
-    .header-official-label {
-      background: rgba(0,0,0,0.18);
-      border-top: 1px solid rgba(255,255,255,0.15);
-      padding: 5px 22px;
-      font-size: 11px;
+    .header-text { flex: 1; color: white; }
+    .header-bn {
+      font-family: 'Noto Serif Bengali', serif;
+      font-size: 13px;
       color: rgba(255,255,255,0.7);
-      text-align: right;
+      margin-bottom: 3px;
       letter-spacing: 0.3px;
     }
+    .header-title {
+      font-size: clamp(15px, 2.8vw, 21px);
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+    .header-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      margin-top: 4px;
+      font-weight: 400;
+    }
+    .header-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .header-badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.85);
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.3px;
+    }
+    .header-badge.gold {
+      background: rgba(212,160,23,0.18);
+      border-color: rgba(212,160,23,0.4);
+      color: var(--gold-light);
+    }
 
-    /* Green bottom stripe on header (like the image) */
-    .header-bottom-stripe {
-      height: 5px;
-      background: linear-gradient(90deg, #006a4e 0%, #009958 50%, #006a4e 100%);
+    /* Gold bar */
+    .gold-bar {
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
     }
 
     /* ════════════════════════════════
@@ -251,6 +223,7 @@
 
     .card-body { padding: 24px 28px 28px; }
 
+    /* ── ALERT ── */
     .alert {
       display: none;
       padding: 13px 16px;
@@ -262,10 +235,23 @@
       align-items: center;
       gap: 10px;
     }
-    .alert.error   { display: flex; background: var(--red-pale); border: 1px solid rgba(240,82,82,0.3); border-left: 4px solid var(--red-dark); color: #9b1c1c; }
-    .alert.success { display: flex; background: var(--green-pale); border: 1px solid rgba(0,106,78,0.2); border-left: 4px solid var(--green-mid); color: var(--green); }
+    .alert.error   {
+      display: flex;
+      background: var(--red-pale);
+      border: 1px solid rgba(240,82,82,0.3);
+      border-left: 4px solid var(--red-dark);
+      color: #9b1c1c;
+    }
+    .alert.success {
+      display: flex;
+      background: var(--green-pale);
+      border: 1px solid rgba(0,106,78,0.2);
+      border-left: 4px solid var(--green-mid);
+      color: var(--green);
+    }
     .alert-icon { font-size: 16px; flex-shrink: 0; }
 
+    /* ── FORM ROWS ── */
     .form-row {
       display: grid;
       grid-template-columns: 148px 1fr;
@@ -273,8 +259,18 @@
       margin-bottom: 13px;
       gap: 12px;
     }
-    .form-row label { font-size: 13.5px; font-weight: 600; color: var(--text2); display: flex; align-items: center; gap: 6px; }
-    .form-row label::after { content: ':'; color: var(--text3); }
+    .form-row label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-row label::after {
+      content: ':';
+      color: var(--text3);
+    }
     .form-row .field-wrap { position: relative; }
     .form-row select,
     .form-row input[type=text],
@@ -291,79 +287,330 @@
       outline: none;
       appearance: none;
     }
+    /* custom select arrow */
     .select-wrap { position: relative; }
-    .select-wrap::after { content: '▾'; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); pointer-events: none; font-size: 13px; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text3);
+      pointer-events: none;
+      font-size: 13px;
+    }
     .form-row select:focus,
-    .form-row input:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(0,106,78,0.1); background: white; }
+    .form-row input:focus {
+      border-color: var(--green-mid);
+      box-shadow: 0 0 0 3px rgba(0,106,78,0.1);
+      background: white;
+    }
     .form-row input::placeholder { color: #b0b8bc; }
 
-    .captcha-wrap { display: grid; grid-template-columns: 148px 1fr; align-items: center; margin-bottom: 22px; gap: 12px; }
-    .captcha-label { font-size: 13.5px; font-weight: 600; color: var(--text2); }
-    .captcha-inner { display: flex; align-items: center; gap: 10px; }
-    .captcha-question { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; background: var(--green-pale); border: 1.5px solid var(--green-pale2); color: var(--green); padding: 8px 16px; border-radius: 7px; white-space: nowrap; letter-spacing: 1px; }
+    /* Captcha row */
+    .captcha-wrap {
+      display: grid;
+      grid-template-columns: 148px 1fr;
+      align-items: center;
+      margin-bottom: 22px;
+      gap: 12px;
+    }
+    .captcha-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text2);
+    }
+    .captcha-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .captcha-question {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 700;
+      background: var(--green-pale);
+      border: 1.5px solid var(--green-pale2);
+      color: var(--green);
+      padding: 8px 16px;
+      border-radius: 7px;
+      white-space: nowrap;
+      letter-spacing: 1px;
+    }
     .captcha-eq { font-size: 16px; color: var(--text3); font-weight: 500; }
-    .captcha-inner input { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 600; padding: 8px 13px; border: 1.5px solid var(--border); border-radius: 7px; background: #fafcfb; color: var(--text); width: 110px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; text-align: center; }
-    .captcha-inner input:focus { border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(0,106,78,0.1); background: white; }
+    .captcha-inner input {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 8px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 7px;
+      background: #fafcfb;
+      color: var(--text);
+      width: 110px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+    .captcha-inner input:focus {
+      border-color: var(--green-mid);
+      box-shadow: 0 0 0 3px rgba(0,106,78,0.1);
+      background: white;
+    }
 
     .divider { border: none; border-top: 1px solid var(--border); margin: 6px 0 20px; }
 
-    .btn-row { display: flex; gap: 10px; padding-left: 160px; }
-    .btn { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; padding: 10px 28px; border: none; border-radius: 7px; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 7px; }
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      padding-left: 160px;
+    }
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      padding: 10px 28px;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
     .btn:active { transform: scale(0.97); }
-    .btn-submit { background: var(--green); color: white; box-shadow: 0 2px 8px rgba(0,106,78,0.25); }
+    .btn-submit {
+      background: var(--green);
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,106,78,0.25);
+    }
     .btn-submit:hover { background: var(--green-mid); box-shadow: 0 4px 14px rgba(0,106,78,0.3); }
-    .btn-reset { background: white; color: var(--text2); border: 1.5px solid var(--border); }
+    .btn-reset {
+      background: white;
+      color: var(--text2);
+      border: 1.5px solid var(--border);
+    }
     .btn-reset:hover { background: var(--bg); border-color: var(--border2); }
-    .btn-print { background: var(--green); color: white; font-size: 13px; padding: 9px 22px; }
+    .btn-print {
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      padding: 9px 22px;
+    }
     .btn-print:hover { background: var(--green-mid); }
 
-    .loader { display: none; text-align: center; padding: 36px 20px; }
+    /* ════════════════════════════════
+       LOADER
+    ════════════════════════════════ */
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 36px 20px;
+    }
     .loader.active { display: block; }
-    .loader-ring { display: inline-block; width: 44px; height: 44px; border: 3px solid var(--green-pale2); border-top-color: var(--green-mid); border-radius: 50%; animation: spin 0.75s linear infinite; margin-bottom: 12px; }
+    .loader-ring {
+      display: inline-block;
+      width: 44px; height: 44px;
+      border: 3px solid var(--green-pale2);
+      border-top-color: var(--green-mid);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      margin-bottom: 12px;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loader-text { font-size: 13.5px; color: var(--text3); font-weight: 500; }
+    .loader-text {
+      font-size: 13.5px;
+      color: var(--text3);
+      font-weight: 500;
+    }
     .loader-text strong { color: var(--green); }
 
+    /* ════════════════════════════════
+       RESULT SECTION
+    ════════════════════════════════ */
     #result-section { display: none; animation: fadeUp 0.5s ease both; }
 
-    .result-wrapper { background: white; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); margin-bottom: 20px; }
-    .result-titlebar { background: linear-gradient(135deg, #00432f 0%, var(--green) 100%); padding: 0; position: relative; overflow: hidden; }
-    .result-titlebar::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='80' cy='20' r='40' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/svg%3E"); }
-    .result-titlebar-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; position: relative; }
-    .result-exam-title { font-size: 17px; font-weight: 800; color: white; letter-spacing: -0.3px; }
+    /* Result card wrapper */
+    .result-wrapper {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 20px;
+    }
+
+    /* Title bar */
+    .result-titlebar {
+      background: linear-gradient(135deg, #00432f 0%, var(--green) 100%);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .result-titlebar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='80' cy='20' r='40' fill='%23ffffff' fill-opacity='0.03'/%3E%3C/svg%3E");
+    }
+    .result-titlebar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      position: relative;
+    }
+    .result-exam-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.3px;
+    }
     .result-exam-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
-    .result-gpa-badge { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 6px 16px; border-radius: 999px; text-align: center; }
+    .result-gpa-badge {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 999px;
+      text-align: center;
+    }
     .result-gpa-num  { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
     .result-gpa-lbl  { font-size: 9px; letter-spacing: 1px; opacity: 0.7; text-transform: uppercase; }
 
-    .result-status { padding: 11px 24px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; letter-spacing: 0.3px; }
-    .result-status.pass { background: linear-gradient(90deg, #d1fae5, #ecfdf5); color: #065f46; border-bottom: 1px solid #a7f3d0; }
-    .result-status.fail { background: linear-gradient(90deg, #fee2e2, #fff5f5); color: #991b1b; border-bottom: 1px solid #fca5a5; }
+    /* Result status banner */
+    .result-status {
+      padding: 11px 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .result-status.pass {
+      background: linear-gradient(90deg, #d1fae5, #ecfdf5);
+      color: #065f46;
+      border-bottom: 1px solid #a7f3d0;
+    }
+    .result-status.fail {
+      background: linear-gradient(90deg, #fee2e2, #fff5f5);
+      color: #991b1b;
+      border-bottom: 1px solid #fca5a5;
+    }
     .status-icon { font-size: 20px; }
 
-    .info-section { padding: 0; border-bottom: 1px solid var(--border); }
-    .info-section-title { padding: 11px 24px 9px; font-size: 11px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; background: #fafcfb; border-bottom: 1px solid var(--border); }
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    /* Student info grid */
+    .info-section {
+      padding: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-section-title {
+      padding: 11px 24px 9px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: #fafcfb;
+      border-bottom: 1px solid var(--border);
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
     .info-col:first-child { border-right: 1px solid var(--border); }
-    .info-row { display: flex; align-items: baseline; padding: 10px 22px; border-bottom: 1px solid rgba(209,221,214,0.5); gap: 10px; }
+    .info-row {
+      display: flex;
+      align-items: baseline;
+      padding: 10px 22px;
+      border-bottom: 1px solid rgba(209,221,214,0.5);
+      gap: 10px;
+    }
     .info-row:last-child { border-bottom: none; }
-    .info-label { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; min-width: 108px; flex-shrink: 0; }
-    .info-value { font-size: 13.5px; color: var(--text); font-weight: 500; }
+    .info-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      min-width: 108px;
+      flex-shrink: 0;
+    }
+    .info-value {
+      font-size: 13.5px;
+      color: var(--text);
+      font-weight: 500;
+    }
     .info-value.pass { color: #065f46; font-weight: 800; font-size: 15px; }
     .info-value.fail { color: #991b1b; font-weight: 800; font-size: 15px; }
-    .info-value.mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text2); }
+    .info-value.mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--text2);
+    }
 
-    .grade-section-title { padding: 11px 24px 9px; font-size: 11px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; background: #fafcfb; border-bottom: 1px solid var(--border); border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+    /* Grade sheet */
+    .grade-section { }
+    .grade-section-title {
+      padding: 11px 24px 9px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      background: #fafcfb;
+      border-bottom: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .grade-table { width: 100%; border-collapse: collapse; }
     .grade-table thead { background: var(--green-pale); }
-    .grade-table th { padding: 10px 18px; text-align: left; font-size: 11px; font-weight: 800; color: var(--green); text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 2px solid var(--green-pale2); }
-    .grade-table td { padding: 10px 18px; border-bottom: 1px solid #eef2ef; font-size: 13.5px; }
+    .grade-table th {
+      padding: 10px 18px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      border-bottom: 2px solid var(--green-pale2);
+    }
+    .grade-table td {
+      padding: 10px 18px;
+      border-bottom: 1px solid #eef2ef;
+      font-size: 13.5px;
+    }
     .grade-table tbody tr:last-child td { border-bottom: none; }
     .grade-table tbody tr:hover td { background: #f5fbf8; }
-    .grade-table td.code-cell { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--text3); font-weight: 500; }
-    .grade-table td.marks-cell { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--text2); text-align: center; }
+    .grade-table td.code-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--text3);
+      font-weight: 500;
+    }
+    .grade-table td.marks-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      text-align: center;
+    }
 
-    .grade-badge { display: inline-flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 700; padding: 3px 12px; border-radius: 999px; min-width: 44px; }
+    .grade-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 999px;
+      min-width: 44px;
+    }
     .grade-Aplus  { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
     .grade-A      { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
     .grade-Aminus { background: #ede9fe; color: #4c1d95; border: 1px solid #c4b5fd; }
@@ -372,16 +619,47 @@
     .grade-D      { background: #fce7f3; color: #831843; border: 1px solid #f9a8d4; }
     .grade-F      { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 
-    .result-actions { padding: 14px 22px; display: flex; gap: 10px; align-items: center; background: #fafcfb; border-top: 1px solid var(--border); }
+    /* Card footer actions */
+    .result-actions {
+      padding: 14px 22px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: #fafcfb;
+      border-top: 1px solid var(--border);
+    }
 
-    .notice { background: var(--gold-pale); border: 1px solid rgba(201,148,26,0.25); border-left: 4px solid var(--gold); padding: 13px 18px; font-size: 13px; color: #78350f; border-radius: var(--radius); line-height: 1.7; margin-bottom: 20px; }
+    /* Notice */
+    .notice {
+      background: var(--gold-pale);
+      border: 1px solid rgba(201,148,26,0.25);
+      border-left: 4px solid var(--gold);
+      padding: 13px 18px;
+      font-size: 13px;
+      color: #78350f;
+      border-radius: var(--radius);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
     .notice strong { color: var(--red-dark); }
 
     /* ════════════════════════════════
        FOOTER
     ════════════════════════════════ */
-    footer { background: var(--green); margin-top: auto; }
-    .footer-inner { max-width: 960px; margin: 0 auto; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    footer {
+      background: var(--green);
+      margin-top: auto;
+    }
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
     .footer-left { color: rgba(255,255,255,0.9); }
     .footer-title { font-size: 13.5px; font-weight: 700; color: white; margin-bottom: 3px; }
     .footer-sub   { font-size: 12px; color: rgba(255,255,255,0.65); }
@@ -389,8 +667,18 @@
     .footer-link  { color: rgba(255,255,255,0.6); font-size: 12px; text-decoration: none; transition: color 0.15s; }
     .footer-link:hover { color: white; }
     .footer-divider { border-top: 1px solid rgba(255,255,255,0.12); }
-    .footer-bottom { max-width: 960px; margin: 0 auto; padding: 10px 24px; font-size: 11px; color: rgba(255,255,255,0.45); text-align: center; }
+    .footer-bottom {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 10px 24px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+    }
 
+    /* ════════════════════════════════
+       PRINT
+    ════════════════════════════════ */
     @media print {
       header, .ticker, .search-card, .loader, .notice, footer, .result-actions { display: none !important; }
       body { background: white; }
@@ -399,12 +687,14 @@
       .result-titlebar { background: #006a4e !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
 
+    /* ════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════ */
     @media (max-width: 640px) {
-      .header-top-strip { display: none; }
-      .header-emblem-panel { min-width: 80px; padding: 10px 14px; }
-      .emblem-svg { width: 54px; height: 54px; }
-      .header-ministry-text { font-size: 12px; }
-      .header-board-title { font-size: 13px; }
+      .header-top { display: none; }
+      .header-main { padding: 16px; gap: 14px; }
+      .header-title { font-size: 15px; }
+      .header-badges { display: none; }
       .card-body { padding: 18px 16px 22px; }
       .form-row { grid-template-columns: 1fr; gap: 4px; }
       .form-row label::after { display: none; }
@@ -421,63 +711,24 @@
 <body>
 
 <header>
-  <div class="header-top-strip">
+  <div class="header-top">
     <div class="header-top-item">📅 <span id="header-date">—</span></div>
     <div class="header-top-item">🌐 <span>educationboard.gov.bd</span></div>
     <div class="header-top-item">📞 <span>Helpline: 16222</span></div>
   </div>
-
-  <div class="header-logo-row">
-    <!-- Left: White panel with Bangladesh emblem -->
-    <div class="header-emblem-panel">
-      <!-- Bangladesh National Emblem SVG -->
-      <svg class="emblem-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer circle -->
-        <circle cx="50" cy="50" r="47" fill="none" stroke="#006a4e" stroke-width="2.5"/>
-        <!-- Inner decorative ring -->
-        <circle cx="50" cy="50" r="42" fill="#f5f9f7" stroke="#006a4e" stroke-width="1"/>
-        <!-- Water lily / Shapla - main flower shape -->
-        <g transform="translate(50,50)">
-          <!-- Petals -->
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.9"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.9" transform="rotate(45)"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.9" transform="rotate(90)"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.9" transform="rotate(135)"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.85" transform="rotate(22.5)"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.85" transform="rotate(67.5)"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.85" transform="rotate(112.5)"/>
-          <ellipse rx="6" ry="18" fill="#f42a41" opacity="0.85" transform="rotate(157.5)"/>
-          <!-- Center circle -->
-          <circle r="7" fill="#006a4e"/>
-          <circle r="4.5" fill="#f5f5f5"/>
-          <circle r="2.5" fill="#006a4e"/>
-        </g>
-        <!-- Four stars -->
-        <text x="50" y="20" text-anchor="middle" font-size="8" fill="#006a4e">★</text>
-        <text x="50" y="86" text-anchor="middle" font-size="8" fill="#006a4e">★</text>
-        <text x="14" y="54" text-anchor="middle" font-size="8" fill="#006a4e">★</text>
-        <text x="86" y="54" text-anchor="middle" font-size="8" fill="#006a4e">★</text>
-        <!-- Bottom text arc placeholder -->
-        <text x="50" y="96" text-anchor="middle" font-size="5.5" fill="#006a4e" font-weight="bold">সরকার</text>
-      </svg>
-    </div>
-
-    <!-- Right: Green panel with title -->
-    <div class="header-title-panel">
-      <div class="header-ministry-bar">
-        <div class="header-ministry-text">Ministry of Education</div>
+  <div class="header-main">
+    <div class="header-text">
+      <div class="header-bn">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার — শিক্ষা মন্ত্রণালয়</div>
+      <div class="header-title">Bangladesh Intermediate & Secondary Education Boards</div>
+      <div class="header-sub">Official Result Publication Portal — সরকারি ফলাফল প্রকাশনা পোর্টাল</div>
+      <div class="header-badges">
+        <span class="header-badge gold">✦ Official Portal</span>
+        <span class="header-badge">SSC / HSC / Dakhil / Alim</span>
+        <span class="header-badge">JSC / JDC / PSC</span>
       </div>
-      <div class="header-board-bar">
-        <div>
-          <div class="header-board-title">Intermediate and Secondary Education Boards Bangladesh</div>
-          <div class="header-board-sub">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার — শিক্ষা মন্ত্রণালয় — সরকারি ফলাফল পোর্টাল</div>
-        </div>
-      </div>
-      <div class="header-official-label">Official Website of Education Board</div>
     </div>
   </div>
-
-  <div class="header-bottom-stripe"></div>
+  <div class="gold-bar"></div>
 </header>
 
 <div class="ticker" id="notice-ticker" style="display:none">
@@ -565,6 +816,7 @@
 
   <div id="result-section">
     <div class="result-wrapper">
+
       <div class="result-titlebar">
         <div class="result-titlebar-inner">
           <div>
@@ -607,15 +859,13 @@
         <button class="btn btn-print" onclick="window.print()">🖨️ Print Result</button>
         <button class="btn btn-reset" onclick="resetForm(); document.getElementById('result-section').style.display='none';" style="font-size:12px; padding:8px 16px;">← New Search</button>
       </div>
-    </div>
 
-    <div class="notice">
+    </div><div class="notice">
       <strong>⚠ Important Notice:</strong> This result is published officially by the respective Education Board.
       For any result discrepancy, please contact your Board office with required documents
       <strong>within 30 days</strong> of result publication. This portal does not process re-scrutiny applications.
     </div>
-  </div>
-</main>
+  </div></main>
 
 <footer>
   <div class="footer-inner">
@@ -636,11 +886,14 @@
   </div>
 </footer>
 
+
 <script>
+  // ── DATE ──
   const now = new Date();
   document.getElementById('header-date').textContent =
     now.toLocaleDateString('en-BD', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
+  // ── NOTICE TICKER ──
   (async function loadNotice() {
     try {
       const res  = await fetch('/api/notice');
@@ -649,9 +902,11 @@
         document.getElementById('ticker-text').textContent = json.data.message;
         document.getElementById('notice-ticker').style.display = 'flex';
       }
-    } catch (_) {}
+    } catch (_) { /* silently ignore — ticker stays hidden */ }
   })();
 
+
+  // ── LOAD DROPDOWNS ──
   async function loadDropdowns() {
     try {
       const [examRes, yearRes, boardRes] = await Promise.all([
@@ -659,15 +914,19 @@
         fetch('/api/years').then(r => r.json()),
         fetch('/api/boards').then(r => r.json())
       ]);
+
       const examSel  = document.getElementById('examination');
       const yearSel  = document.getElementById('year');
       const boardSel = document.getElementById('board');
+
       examSel.innerHTML  = '<option value="">— Select Examination —</option>';
       yearSel.innerHTML  = '<option value="">— Select Year —</option>';
       boardSel.innerHTML = '<option value="">— Select Board —</option>';
+
       (examRes.data  || []).forEach(e => examSel.innerHTML  += `<option value="${e}">${e}</option>`);
       (yearRes.data  || []).forEach(y => yearSel.innerHTML  += `<option value="${y}">${y}</option>`);
       (boardRes.data || []).forEach(b => boardSel.innerHTML += `<option value="${b}">${b}</option>`);
+
       if (examRes.data?.length) examSel.value = examRes.data[0];
       if (yearRes.data?.length) yearSel.value = yearRes.data[0];
     } catch {
@@ -685,6 +944,7 @@
   }
   loadDropdowns();
 
+  // ── CAPTCHA ──
   let captchaA, captchaB, captchaAnswer;
   function generateCaptcha() {
     captchaA = Math.floor(Math.random() * 9) + 1;
@@ -695,14 +955,18 @@
   }
   generateCaptcha();
 
+  // ── ALERT ──
   function showAlert(msg, type) {
     const icons = { error: '⚠️', success: '✅' };
     document.getElementById('alert-icon').textContent = icons[type] || '';
     document.getElementById('alert-text').textContent = msg;
     document.getElementById('alert-box').className = `alert ${type}`;
   }
-  function hideAlert() { document.getElementById('alert-box').className = 'alert'; }
+  function hideAlert() {
+    document.getElementById('alert-box').className = 'alert';
+  }
 
+  // ── RESET ──
   function resetForm() {
     ['roll','regNo','captcha'].forEach(id => document.getElementById(id).value = '');
     hideAlert();
@@ -710,11 +974,13 @@
     generateCaptcha();
   }
 
+  // ── GRADE CLASS ──
   function gradeClass(g) {
     const map = { 'A+':'grade-Aplus','A':'grade-A','A-':'grade-Aminus','B':'grade-B','C':'grade-C','D':'grade-D','F':'grade-F' };
     return map[g] || 'grade-F';
   }
 
+  // ── FETCH ──
   async function fetchResult() {
     const examination = document.getElementById('examination').value.trim();
     const year        = document.getElementById('year').value.trim();
@@ -742,10 +1008,12 @@
       const resp = await fetch(`/api/result?${qs}`);
       const json = await resp.json();
       document.getElementById('loader').classList.remove('active');
+
       if (!json.success) {
         generateCaptcha();
         return showAlert(json.message || 'No result found. Please verify your details.', 'error');
       }
+
       renderResult(json.data);
       generateCaptcha();
     } catch {
@@ -755,7 +1023,9 @@
     }
   }
 
+  // ── RENDER ──
   function renderResult(d) {
+    // 33 এর নিচে মার্কস থাকলে Grade 'F' করা এবং ওভারঅল রেজাল্ট FAIL সেট করার লজিক
     let hasFailedSubject = false;
     if (d.subjects && Array.isArray(d.subjects)) {
       d.subjects.forEach(s => {
@@ -765,17 +1035,23 @@
         }
       });
     }
-    if (hasFailedSubject) { d.result = 'FAIL'; d.gpa = '0.00'; }
 
+    if (hasFailedSubject) {
+      d.result = 'FAIL';
+      d.gpa = '0.00';
+    }
+
+    // Title
     document.getElementById('result-title').textContent = `${d.examination} — Result ${d.year}`;
     document.getElementById('result-gpa').textContent   = d.gpa || 'N/A';
 
+    // Status banner
     const bar  = document.getElementById('result-status-bar');
     const icon = document.getElementById('status-icon');
     const txt  = document.getElementById('status-text');
     if (d.result === 'PASS') {
       bar.className = 'result-status pass';
-      icon.textContent = '';
+      icon.textContent = ''; // ইমোজিটি বাদ দেওয়া হয়েছে
       txt.textContent  = `PASSED — Congratulations, ${d.name}!`;
     } else {
       bar.className = 'result-status fail';
@@ -783,6 +1059,7 @@
       txt.textContent  = `FAILED — ${d.name}`;
     }
 
+    // Left & Right info columns
     const leftRows = [
       ['Roll No',  d.rollNo,  'mono'],
       ['Reg. No',  d.regNo,   'mono'],
@@ -792,12 +1069,12 @@
       ['Result',   d.result, d.result === 'PASS' ? 'pass' : 'fail'],
     ];
     const rightRows = [
-      ['Student Name', d.name, ''],
+      ['Student Name', d.name,           ''],
       ["Father's Name", d.fatherName || '—', ''],
       ["Mother's Name", d.motherName || '—', ''],
       ['Date of Birth', d.dateOfBirth || '—', ''],
       ['Institute',    d.institute || '—', ''],
-      ['GPA',          d.gpa || '—', 'mono'],
+      ['GPA',          d.gpa || '—',      'mono'],
     ];
 
     function buildCol(rows) {
@@ -817,6 +1094,7 @@
     grid.appendChild(buildCol(leftRows));
     grid.appendChild(buildCol(rightRows));
 
+    // Subjects
     const tbody = document.getElementById('grade-tbody');
     tbody.innerHTML = '';
     (d.subjects || []).forEach(s => {
@@ -828,11 +1106,13 @@
       </tr>`;
     });
 
+    // Show
     const section = document.getElementById('result-section');
     section.style.display = 'block';
     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  // Enter key
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.target.closest('.result-wrapper')) fetchResult();
   });
