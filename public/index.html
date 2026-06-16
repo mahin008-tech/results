@@ -88,6 +88,21 @@
       position: relative;
     }
 
+    /* Emblem */
+    .emblem {
+      width: 80px; height: 80px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.3));
+    }
+    .emblem-ring {
+      width: 80px; height: 80px;
+      background: rgba(255,255,255,0.08);
+      border: 2px solid rgba(212,160,23,0.5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 4px rgba(212,160,23,0.15), inset 0 0 20px rgba(0,0,0,0.15);
+    }
+
     .header-text { flex: 1; color: white; }
     .header-bn {
       font-family: 'Noto Serif Bengali', serif;
@@ -520,6 +535,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
+    .info-col { }
     .info-col:first-child { border-right: 1px solid var(--border); }
     .info-row {
       display: flex;
@@ -693,6 +709,8 @@
     @media (max-width: 640px) {
       .header-top { display: none; }
       .header-main { padding: 16px; gap: 14px; }
+      .emblem-ring { width: 60px; height: 60px; }
+      .emblem { width: 60px; height: 60px; }
       .header-title { font-size: 15px; }
       .header-badges { display: none; }
       .card-body { padding: 18px 16px 22px; }
@@ -710,6 +728,9 @@
 </head>
 <body>
 
+<!-- ════════════════════════════════
+     HEADER
+════════════════════════════════ -->
 <header>
   <div class="header-top">
     <div class="header-top-item">📅 <span id="header-date">—</span></div>
@@ -717,6 +738,17 @@
     <div class="header-top-item">📞 <span>Helpline: 16222</span></div>
   </div>
   <div class="header-main">
+    <div class="emblem-ring">
+      <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+        <circle cx="40" cy="40" r="36" fill="#005c42" stroke="#c9941a" stroke-width="2"/>
+        <circle cx="40" cy="36" r="13" fill="#f42a41"/>
+        <path d="M23 54 Q40 44 57 54" stroke="#c9941a" stroke-width="1.5" fill="none"/>
+        <path d="M26 50 Q40 38 54 50" stroke="#c9941a" stroke-width="1" fill="none" opacity=".5"/>
+        <line x1="40" y1="60" x2="40" y2="70" stroke="#c9941a" stroke-width="1.5"/>
+        <line x1="30" y1="64" x2="50" y2="64" stroke="#c9941a" stroke-width="1.5"/>
+        <text x="40" y="77" text-anchor="middle" font-size="6.5" fill="#c9941a" font-family="serif" font-weight="bold">বাংলাদেশ</text>
+      </svg>
+    </div>
     <div class="header-text">
       <div class="header-bn">গণপ্রজাতন্ত্রী বাংলাদেশ সরকার — শিক্ষা মন্ত্রণালয়</div>
       <div class="header-title">Bangladesh Intermediate & Secondary Education Boards</div>
@@ -731,6 +763,7 @@
   <div class="gold-bar"></div>
 </header>
 
+<!-- TICKER -->
 <div class="ticker" id="notice-ticker" style="display:none">
   <div class="ticker-label">📢 Notice</div>
   <div class="ticker-scroll">
@@ -738,8 +771,12 @@
   </div>
 </div>
 
+<!-- ════════════════════════════════
+     MAIN
+════════════════════════════════ -->
 <main>
 
+  <!-- SEARCH CARD -->
   <div class="search-card">
     <div class="card-header">
       <div class="card-header-icon">🔍</div>
@@ -809,14 +846,17 @@
     </div>
   </div>
 
+  <!-- LOADER -->
   <div class="loader" id="loader">
     <div class="loader-ring"></div>
     <div class="loader-text">Searching database… <strong>Please wait</strong></div>
   </div>
 
+  <!-- RESULT SECTION -->
   <div id="result-section">
     <div class="result-wrapper">
 
+      <!-- Title bar -->
       <div class="result-titlebar">
         <div class="result-titlebar-inner">
           <div>
@@ -830,16 +870,19 @@
         </div>
       </div>
 
+      <!-- Status banner -->
       <div class="result-status" id="result-status-bar">
         <span class="status-icon" id="status-icon">—</span>
         <span id="status-text">—</span>
       </div>
 
+      <!-- Student Info -->
       <div class="info-section">
         <div class="info-section-title">👤 Student Information</div>
         <div class="info-grid" id="info-grid"></div>
       </div>
 
+      <!-- Grade Sheet -->
       <div class="grade-section">
         <div class="grade-section-title">📚 Grade Sheet</div>
         <table class="grade-table">
@@ -855,18 +898,27 @@
         </table>
       </div>
 
+      <!-- Actions -->
       <div class="result-actions">
         <button class="btn btn-print" onclick="window.print()">🖨️ Print Result</button>
         <button class="btn btn-reset" onclick="resetForm(); document.getElementById('result-section').style.display='none';" style="font-size:12px; padding:8px 16px;">← New Search</button>
       </div>
 
-    </div><div class="notice">
+    </div><!-- /result-wrapper -->
+
+    <!-- Notice -->
+    <div class="notice">
       <strong>⚠ Important Notice:</strong> This result is published officially by the respective Education Board.
       For any result discrepancy, please contact your Board office with required documents
       <strong>within 30 days</strong> of result publication. This portal does not process re-scrutiny applications.
     </div>
-  </div></main>
+  </div><!-- /result-section -->
 
+</main>
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
 <footer>
   <div class="footer-inner">
     <div class="footer-left">
@@ -1025,22 +1077,6 @@
 
   // ── RENDER ──
   function renderResult(d) {
-    // 33 এর নিচে মার্কস থাকলে Grade 'F' করা এবং ওভারঅল রেজাল্ট FAIL সেট করার লজিক
-    let hasFailedSubject = false;
-    if (d.subjects && Array.isArray(d.subjects)) {
-      d.subjects.forEach(s => {
-        if (s.marks != null && !isNaN(s.marks) && Number(s.marks) < 33) {
-          s.grade = 'F';
-          hasFailedSubject = true;
-        }
-      });
-    }
-
-    if (hasFailedSubject) {
-      d.result = 'FAIL';
-      d.gpa = '0.00';
-    }
-
     // Title
     document.getElementById('result-title').textContent = `${d.examination} — Result ${d.year}`;
     document.getElementById('result-gpa').textContent   = d.gpa || 'N/A';
@@ -1051,7 +1087,7 @@
     const txt  = document.getElementById('status-text');
     if (d.result === 'PASS') {
       bar.className = 'result-status pass';
-      icon.textContent = ''; // ইমোজিটি বাদ দেওয়া হয়েছে
+      icon.textContent = '🎉';
       txt.textContent  = `PASSED — Congratulations, ${d.name}!`;
     } else {
       bar.className = 'result-status fail';
