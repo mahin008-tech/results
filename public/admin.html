@@ -453,9 +453,8 @@
       font-size: 13px;
       font-family: inherit;
       transition: border-color 0.15s, box-shadow 0.15s;
-      text-transform: uppercase;   /* auto-caps display */
+      text-transform: uppercase;
     }
-    /* Keep select options readable */
     .form-group select option { text-transform: none; }
     .form-group input:focus,
     .form-group select:focus,
@@ -466,9 +465,7 @@
     }
     .form-group input::placeholder { color: var(--text3); text-transform: none; }
     .form-group textarea { resize: vertical; min-height: 80px; text-transform: uppercase; }
-    /* Date of birth — keep as-is */
     #f-dateOfBirth { text-transform: none; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; }
-    /* GPA, Roll, Reg — mono */
     #f-rollNo, #f-regNo, #f-gpa {
       font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0.5px;
@@ -683,16 +680,59 @@
     .empty-state .es-sub { font-size: 13px; }
 
     /* ═══════════════════════════════════════
+       MOBILE BOTTOM NAV
+    ═══════════════════════════════════════ */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      z-index: 150;
+      height: 62px;
+      justify-content: space-around;
+      align-items: stretch;
+    }
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      flex: 1;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text3);
+      padding: 8px 4px;
+      border: none;
+      background: none;
+      font-family: inherit;
+      transition: color 0.15s, background 0.15s;
+      border-top: 2px solid transparent;
+      letter-spacing: 0.2px;
+    }
+    .mobile-nav-item .mn-icon { font-size: 19px; line-height: 1; }
+    .mobile-nav-item.active {
+      color: var(--accent);
+      border-top-color: var(--accent);
+      background: rgba(79,142,247,0.06);
+    }
+    .mobile-nav-item:active { opacity: 0.7; }
+
+    /* ═══════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════ */
     @media (max-width: 700px) {
       .sidebar { display: none; }
-      .main { padding: 20px 16px; }
+      .mobile-nav { display: flex; }
+      .main { padding: 20px 16px 80px; }
       .form-grid { grid-template-columns: 1fr; }
       .subject-row, .subjects-header { grid-template-columns: 70px 1fr 70px 65px 34px; }
       .modal { border-radius: 12px; }
       .modal-body { padding: 20px 18px; }
       .modal-header, .modal-footer { padding: 18px; }
+      #toast { bottom: 74px; right: 16px; left: 16px; max-width: 100%; }
     }
   </style>
 </head>
@@ -725,24 +765,24 @@
     <div class="sidebar-section">
       <div class="sidebar-section-label">Overview</div>
     </div>
-    <div class="nav-item active" onclick="switchTab('dashboard')">
+    <div class="nav-item active" onclick="switchTab('dashboard'); setMobileActive('dashboard')">
       <span class="nav-icon">📊</span> Dashboard
     </div>
 
     <div class="sidebar-section" style="margin-top:18px;">
       <div class="sidebar-section-label">Data</div>
     </div>
-    <div class="nav-item" onclick="switchTab('results')">
+    <div class="nav-item" onclick="switchTab('results'); setMobileActive('results')">
       <span class="nav-icon">📋</span> All Results
     </div>
-    <div class="nav-item" onclick="openAddModal(); switchTab('results')">
+    <div class="nav-item" onclick="openAddModal(); switchTab('results'); setMobileActive('results')">
       <span class="nav-icon">➕</span> Add Result
     </div>
 
     <div class="sidebar-section" style="margin-top:18px;">
       <div class="sidebar-section-label">Configuration</div>
     </div>
-    <div class="nav-item" onclick="switchTab('settings')">
+    <div class="nav-item" onclick="switchTab('settings'); setMobileActive('settings')">
       <span class="nav-icon">📢</span> Notice Settings
     </div>
 
@@ -764,7 +804,7 @@
           <div class="page-title">Dashboard</div>
           <div class="page-subtitle">Overview of all results in the database</div>
         </div>
-        <button class="btn btn-primary" onclick="openAddModal(); switchTab('results')">➕ Add Result</button>
+        <button class="btn btn-primary" onclick="openAddModal(); switchTab('results'); setMobileActive('results')">➕ Add Result</button>
       </div>
 
       <div class="stats-grid">
@@ -874,25 +914,20 @@
 
   </div><!-- /main -->
 
-  <!-- ══════════════════════════════════
-       SETTINGS TAB
-  ══════════════════════════════════ -->
 </div><!-- /layout -->
 
-<!-- Settings panel rendered outside layout so it can be full-page-ish -->
-<div id="tab-settings" class="tab" style="display:none; padding: 32px 40px; max-width: 720px; margin: 0 auto;">
+<!-- Settings panel rendered outside layout -->
+<div id="tab-settings" class="tab" style="display:none; padding: 32px 40px 100px; max-width: 720px; margin: 0 auto;">
 
   <div style="margin-bottom:28px;">
     <div style="font-size:20px; font-weight:800; color:var(--text); margin-bottom:4px;">📢 Notice Settings</div>
     <div style="font-size:13px; color:var(--text3);">Manage the scrolling notice banner shown on the public result portal (index.html). Set optional start/end times to control when it appears.</div>
   </div>
 
-  <!-- status toast -->
   <div id="notice-toast" style="display:none; padding:12px 18px; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:20px;"></div>
 
   <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
 
-    <!-- Enabled toggle -->
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border);">
       <div>
         <div style="font-size:14px; font-weight:700; color:var(--text);">Notice Enabled</div>
@@ -908,7 +943,6 @@
       </label>
     </div>
 
-    <!-- Message -->
     <div style="margin-bottom:20px;">
       <label style="display:block; font-size:13px; font-weight:700; color:var(--text2); margin-bottom:8px;">Notice Message</label>
       <textarea id="notice-message" rows="3" placeholder="Enter the notice text to display in the scrolling ticker…" style="
@@ -919,7 +953,6 @@
       <div style="font-size:11px; color:var(--text3); margin-top:5px;">The text will scroll continuously across the ticker band.</div>
     </div>
 
-    <!-- Time window -->
     <div style="margin-bottom:8px;">
       <label style="display:block; font-size:13px; font-weight:700; color:var(--text2); margin-bottom:6px;">⏱ Time Limit (optional)</label>
       <div style="font-size:12px; color:var(--text3); margin-bottom:14px;">Leave both blank to show the notice indefinitely while enabled.</div>
@@ -946,7 +979,6 @@
       </div>
     </div>
 
-    <!-- Clear time limits -->
     <div style="margin-bottom:24px;">
       <button onclick="clearTimeLimits()" style="
         background:transparent; border:1px solid var(--border2); color:var(--text3);
@@ -957,7 +989,6 @@
       </button>
     </div>
 
-    <!-- Save button -->
     <div style="display:flex; gap:12px; align-items:center;">
       <button onclick="saveNoticeSettings()" style="
         background:var(--accent); color:white; border:none;
@@ -971,7 +1002,23 @@
   </div>
 </div>
 
-
+<!-- ══════════════════════════════════════════
+     MOBILE BOTTOM NAV
+══════════════════════════════════════════ -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-item active" id="mn-dashboard" onclick="switchTab('dashboard'); setMobileActive('dashboard')">
+    <span class="mn-icon">📊</span>Dashboard
+  </button>
+  <button class="mobile-nav-item" id="mn-results" onclick="switchTab('results'); setMobileActive('results')">
+    <span class="mn-icon">📋</span>Results
+  </button>
+  <button class="mobile-nav-item" id="mn-add" onclick="openAddModal(); switchTab('results'); setMobileActive('results')">
+    <span class="mn-icon">➕</span>Add
+  </button>
+  <button class="mobile-nav-item" id="mn-settings" onclick="switchTab('settings'); setMobileActive('settings')">
+    <span class="mn-icon">📢</span>Notice
+  </button>
+</div>
 
 <!-- ══════════════════════════════════════════
      RESULT MODAL
@@ -989,7 +1036,6 @@
     <div class="modal-body">
       <div class="form-grid">
 
-        <!-- ── SECTION: Student Info ── -->
         <div class="form-section">
           <span class="form-section-label">👤 Student Information</span>
           <div class="form-section-line"></div>
@@ -1024,7 +1070,6 @@
           <input type="text" id="f-institute" placeholder="School / College name" autocomplete="off" />
         </div>
 
-        <!-- ── SECTION: Exam Details ── -->
         <div class="form-section">
           <span class="form-section-label">🏫 Examination Details</span>
           <div class="form-section-line"></div>
@@ -1070,7 +1115,6 @@
           </select>
         </div>
 
-        <!-- ── SECTION: Religion ── -->
         <div class="form-section">
           <span class="form-section-label">☪️ Religion Subject</span>
           <div class="form-section-line"></div>
@@ -1087,7 +1131,6 @@
           </select>
         </div>
 
-        <!-- ── SECTION: Subjects ── -->
         <div class="form-section">
           <span class="form-section-label">📚 Subjects & Marks</span>
           <div class="form-section-line"></div>
@@ -1107,7 +1150,6 @@
           </div>
         </div>
 
-        <!-- ── SECTION: Visibility ── -->
         <div class="form-section">
           <span class="form-section-label">👁 Visibility</span>
           <div class="form-section-line"></div>
@@ -1126,8 +1168,8 @@
           <input type="checkbox" id="f-hidden" style="display:none;" />
         </div>
 
-      </div><!-- /form-grid -->
-    </div><!-- /modal-body -->
+      </div>
+    </div>
 
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
@@ -1168,9 +1210,17 @@ let searchTimer = null;
 let meta        = { boards: [], years: [], examinations: [] };
 let hiddenState = false;
 
-// Show masked key
 document.getElementById('keyDisplay').textContent =
   ADMIN_KEY ? ADMIN_KEY.slice(0, 4) + '••••' : 'no key';
+
+// ══════════════════════════════════════════
+// MOBILE NAV ACTIVE STATE
+// ══════════════════════════════════════════
+function setMobileActive(name) {
+  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('mn-' + name);
+  if (el) el.classList.add('active');
+}
 
 // ══════════════════════════════════════════
 // HELPERS
@@ -1196,10 +1246,8 @@ async function api(path, opts = {}) {
   return data;
 }
 
-// Auto-uppercase helper — applied on save, not just CSS
 function up(val) {
   if (typeof val !== 'string') return val;
-  // Preserve DOB and numeric strings
   return val.trim().toUpperCase();
 }
 
@@ -1207,7 +1255,6 @@ function switchTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-  // Settings tab is outside .tab system — use display toggle
   const settingsEl = document.getElementById('tab-settings');
   if (name === 'settings') {
     settingsEl.style.display = 'block';
@@ -1423,7 +1470,6 @@ function openAddModal() {
   document.getElementById('saveBtn').textContent    = '💾 Save Result';
   clearForm();
   DEFAULT_SUBJECTS.forEach(s => addSubjectRow(s));
-  // Add religion subject
   const label = document.getElementById('f-religionLabel').value;
   addSubjectRow({ code: '111', name: label, grade: 'A' });
   setHiddenState(false);
@@ -1453,7 +1499,6 @@ async function openEditModal(id) {
     document.getElementById('f-result').value      = r.result      || 'PASS';
     document.getElementById('f-gpa').value         = r.gpa         || '';
     setHiddenState(r.hidden || false);
-    // Religion label
     if (r.religionSubjectLabel) {
       const sel = document.getElementById('f-religionLabel');
       [...sel.options].forEach(o => { if (o.value === r.religionSubjectLabel) o.selected = true; });
@@ -1480,7 +1525,7 @@ function clearForm() {
 }
 
 // ══════════════════════════════════════════
-// SAVE — uppercase enforced in JS too
+// SAVE
 // ══════════════════════════════════════════
 async function saveResult() {
   const rollNo = document.getElementById('f-rollNo').value.trim();
@@ -1501,7 +1546,7 @@ async function saveResult() {
     name:         up(name),
     fatherName:   up(document.getElementById('f-fatherName').value),
     motherName:   up(document.getElementById('f-motherName').value),
-    dateOfBirth:  document.getElementById('f-dateOfBirth').value.trim(),  // keep as-is
+    dateOfBirth:  document.getElementById('f-dateOfBirth').value.trim(),
     examination:  up(exam),
     year:         year.trim(),
     board:        up(board),
@@ -1595,8 +1640,6 @@ document.getElementById('f-religionLabel').addEventListener('change', () => {
 // ══════════════════════════════════════════
 // NOTICE SETTINGS
 // ══════════════════════════════════════════
-
-// Sync toggle visual state
 document.getElementById('notice-enabled').addEventListener('change', function () {
   const track = document.getElementById('toggle-track');
   const thumb = document.getElementById('toggle-thumb');
@@ -1620,7 +1663,6 @@ async function loadNoticeSettings() {
     document.getElementById('notice-enabled').dispatchEvent(new Event('change'));
     document.getElementById('notice-message').value = d.message || '';
 
-    // Convert ISO → datetime-local value (slice off seconds & Z)
     if (d.startTime) document.getElementById('notice-start').value = d.startTime.slice(0, 16);
     if (d.endTime)   document.getElementById('notice-end').value   = d.endTime.slice(0, 16);
 
@@ -1695,7 +1737,6 @@ function showNoticeToast(msg, type) {
 // BOOT
 // ══════════════════════════════════════════
 init();
-
 </script>
 </body>
 </html>
