@@ -86,18 +86,6 @@
       display: flex; align-items: center; gap: 6px;
     }
     .key-chip::before { content: '🔑'; font-size: 12px; }
-    
-    /* Mobile hamburger */
-    .hamburger {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-size: 24px;
-      cursor: pointer;
-      padding: 4px 8px;
-      margin-right: 8px;
-    }
 
     /* ═══════════════════════════════════════
        LAYOUT
@@ -163,14 +151,13 @@
 
     /* ═══════════════════════════════════════
        PAGE HEADER
-    ══════════��════════════════════════════ */
+    ═══════════════════════════════════════ */
     .page-header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       margin-bottom: 24px;
       gap: 16px;
-      flex-wrap: wrap;
     }
     .page-title { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
     .page-subtitle { font-size: 13px; color: var(--text3); margin-top: 3px; }
@@ -360,7 +347,7 @@
     .badge-fail    { background: var(--red-bg); color: var(--red); }
     .badge-hidden  { background: var(--amber-bg); color: var(--amber); }
     .badge-visible { background: rgba(79,142,247,0.1); color: var(--accent); }
-    .actions { display: flex; gap: 5px; flex-wrap: wrap; }
+    .actions { display: flex; gap: 5px; }
     .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text2); }
 
     /* ═══════════════════════════════════════
@@ -437,7 +424,6 @@
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       transition: all 0.15s;
-      flex-shrink: 0;
     }
     .modal-close:hover { background: var(--red-bg); color: var(--red); border-color: var(--red); }
     .modal-body { padding: 24px 28px; }
@@ -467,8 +453,9 @@
       font-size: 13px;
       font-family: inherit;
       transition: border-color 0.15s, box-shadow 0.15s;
-      text-transform: uppercase;
+      text-transform: uppercase;   /* auto-caps display */
     }
+    /* Keep select options readable */
     .form-group select option { text-transform: none; }
     .form-group input:focus,
     .form-group select:focus,
@@ -479,7 +466,9 @@
     }
     .form-group input::placeholder { color: var(--text3); text-transform: none; }
     .form-group textarea { resize: vertical; min-height: 80px; text-transform: uppercase; }
+    /* Date of birth — keep as-is */
     #f-dateOfBirth { text-transform: none; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.5px; }
+    /* GPA, Roll, Reg — mono */
     #f-rollNo, #f-regNo, #f-gpa {
       font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0.5px;
@@ -622,7 +611,6 @@
       border-top: 1px solid var(--border);
       background: var(--surface2);
       border-radius: 0 0 14px 14px;
-      flex-wrap: wrap;
     }
 
     /* ═══════════════════════════════════════
@@ -680,7 +668,7 @@
     .confirm-icon { font-size: 40px; margin-bottom: 12px; }
     .confirm-box h3 { font-size: 17px; font-weight: 800; margin-bottom: 8px; }
     .confirm-box p  { font-size: 13px; color: var(--text2); margin-bottom: 24px; line-height: 1.6; }
-    .confirm-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: center; }
 
     /* ═══════════════════════════════════════
        EMPTY STATE
@@ -695,97 +683,25 @@
     .empty-state .es-sub { font-size: 13px; }
 
     /* ═══════════════════════════════════════
-       MOBILE SIDEBAR OVERLAY
-    ═══════════════════════════════════════ */
-    .sidebar-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 99;
-    }
-    .sidebar-overlay.open { display: block; }
-    .sidebar.mobile-open {
-      position: fixed;
-      left: 0;
-      top: 60px;
-      height: calc(100vh - 60px);
-      z-index: 101;
-      width: 220px;
-    }
-
-    /* ═══════════════════════════════════════
        RESPONSIVE
     ═══════════════════════════════════════ */
-    @media (max-width: 900px) {
-      .hamburger { display: block; }
-      .sidebar { display: none; }
-      .key-chip { display: none; }
-    }
-
     @media (max-width: 700px) {
-      .topbar { padding: 0 16px; }
+      .sidebar { display: none; }
       .main { padding: 20px 16px; }
       .form-grid { grid-template-columns: 1fr; }
-      .subject-row, .subjects-header { grid-template-columns: 65px 1fr 65px 60px 34px; }
+      .subject-row, .subjects-header { grid-template-columns: 70px 1fr 70px 65px 34px; }
       .modal { border-radius: 12px; }
       .modal-body { padding: 20px 18px; }
-      .modal-header, .modal-footer { padding: 16px 18px; }
-      .page-header { flex-direction: column; }
-      .page-header button { width: 100%; }
-      .topbar-right { gap: 6px; }
-      
-      /* Responsive grid */
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      
-      /* Toolbar wrapping */
-      .toolbar { gap: 8px; }
-      .toolbar select { min-width: auto; flex: 1; min-width: 120px; }
-      
-      /* Modal footer */
-      .modal-footer { flex-direction: column-reverse; }
-      .modal-footer button { width: 100%; }
-      
-      /* Confirm actions */
-      .confirm-actions button { flex: 1; }
-      
-      /* Toast positioning */
-      #toast { bottom: 16px; right: 16px; left: 16px; max-width: none; }
-      
-      /* Sidebar on mobile */
-      .sidebar { 
-        position: fixed; 
-        left: -220px; 
-        top: 60px; 
-        height: calc(100vh - 60px); 
-        z-index: 101; 
-        border-right: 1px solid var(--border);
-        transition: left 0.3s ease;
-      }
-    }
-
-    @media (max-width: 500px) {
-      .topbar-brand .brand-sub { display: none; }
-      .admin-pill { display: none; }
-      .page-title { font-size: 18px; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .stat-value { font-size: 28px; }
-      .info-card { font-size: 12px; line-height: 1.6; }
-      .table-wrap { font-size: 12px; }
-      th, td { padding: 10px 12px; }
-      .modal-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .modal-close { align-self: flex-end; }
+      .modal-header, .modal-footer { padding: 18px; }
     }
   </style>
 </head>
 <body>
 
-<!-- SIDEBAR OVERLAY FOR MOBILE -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<!-- TOPBAR -->
+<!-- ══════════════════════════════════════════
+     TOPBAR
+══════════════════════════════════════════ -->
 <div class="topbar">
-  <button class="hamburger" id="hamburger" onclick="toggleSidebar()">☰</button>
   <div class="topbar-brand">
     <div class="brand-icon">🛡️</div>
     <div>
@@ -799,32 +715,34 @@
   </div>
 </div>
 
-<!-- LAYOUT -->
+<!-- ══════════════════════════════════════════
+     LAYOUT
+══════════════════════════════════════════ -->
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <nav class="sidebar" id="sidebar">
+  <nav class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-section-label">Overview</div>
     </div>
-    <div class="nav-item active" onclick="switchTab('dashboard'); toggleSidebar()">
+    <div class="nav-item active" onclick="switchTab('dashboard')">
       <span class="nav-icon">📊</span> Dashboard
     </div>
 
     <div class="sidebar-section" style="margin-top:18px;">
       <div class="sidebar-section-label">Data</div>
     </div>
-    <div class="nav-item" onclick="switchTab('results'); toggleSidebar()">
+    <div class="nav-item" onclick="switchTab('results')">
       <span class="nav-icon">📋</span> All Results
     </div>
-    <div class="nav-item" onclick="openAddModal(); switchTab('results'); toggleSidebar()">
+    <div class="nav-item" onclick="openAddModal(); switchTab('results')">
       <span class="nav-icon">➕</span> Add Result
     </div>
 
     <div class="sidebar-section" style="margin-top:18px;">
       <div class="sidebar-section-label">Configuration</div>
     </div>
-    <div class="nav-item" onclick="switchTab('settings'); toggleSidebar()">
+    <div class="nav-item" onclick="switchTab('settings')">
       <span class="nav-icon">📢</span> Notice Settings
     </div>
 
@@ -839,7 +757,7 @@
   <!-- MAIN -->
   <div class="main">
 
-    <!-- DASHBOARD TAB -->
+    <!-- ══ DASHBOARD TAB ══ -->
     <div id="tab-dashboard" class="tab active">
       <div class="page-header">
         <div>
@@ -901,7 +819,7 @@
       </div>
     </div>
 
-    <!-- RESULTS TAB -->
+    <!-- ══ RESULTS TAB ══ -->
     <div id="tab-results" class="tab">
       <div class="page-header">
         <div>
@@ -956,22 +874,27 @@
 
   </div><!-- /main -->
 
+  <!-- ══════════════════════════════════
+       SETTINGS TAB
+  ══════════════════════════════════ -->
 </div><!-- /layout -->
 
-<!-- SETTINGS TAB (outside layout) -->
-<div id="tab-settings" class="tab" style="display:none; padding: 20px 16px; max-width: 720px; margin: 0 auto;">
+<!-- Settings panel rendered outside layout so it can be full-page-ish -->
+<div id="tab-settings" class="tab" style="display:none; padding: 32px 40px; max-width: 720px; margin: 0 auto;">
 
   <div style="margin-bottom:28px;">
     <div style="font-size:20px; font-weight:800; color:var(--text); margin-bottom:4px;">📢 Notice Settings</div>
     <div style="font-size:13px; color:var(--text3);">Manage the scrolling notice banner shown on the public result portal (index.html). Set optional start/end times to control when it appears.</div>
   </div>
 
+  <!-- status toast -->
   <div id="notice-toast" style="display:none; padding:12px 18px; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:20px;"></div>
 
-  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px;">
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px;">
 
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border); flex-wrap: wrap; gap: 12px;">
-      <div style="flex: 1; min-width: 200px;">
+    <!-- Enabled toggle -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border);">
+      <div>
         <div style="font-size:14px; font-weight:700; color:var(--text);">Notice Enabled</div>
         <div style="font-size:12px; color:var(--text3); margin-top:3px;">When off, the ticker is hidden regardless of time settings.</div>
       </div>
@@ -985,6 +908,7 @@
       </label>
     </div>
 
+    <!-- Message -->
     <div style="margin-bottom:20px;">
       <label style="display:block; font-size:13px; font-weight:700; color:var(--text2); margin-bottom:8px;">Notice Message</label>
       <textarea id="notice-message" rows="3" placeholder="Enter the notice text to display in the scrolling ticker…" style="
@@ -995,6 +919,7 @@
       <div style="font-size:11px; color:var(--text3); margin-top:5px;">The text will scroll continuously across the ticker band.</div>
     </div>
 
+    <!-- Time window -->
     <div style="margin-bottom:8px;">
       <label style="display:block; font-size:13px; font-weight:700; color:var(--text2); margin-bottom:6px;">⏱ Time Limit (optional)</label>
       <div style="font-size:12px; color:var(--text3); margin-bottom:14px;">Leave both blank to show the notice indefinitely while enabled.</div>
@@ -1021,6 +946,7 @@
       </div>
     </div>
 
+    <!-- Clear time limits -->
     <div style="margin-bottom:24px;">
       <button onclick="clearTimeLimits()" style="
         background:transparent; border:1px solid var(--border2); color:var(--text3);
@@ -1031,11 +957,12 @@
       </button>
     </div>
 
-    <div style="display:flex; gap:12px; align-items:center; flex-wrap: wrap;">
+    <!-- Save button -->
+    <div style="display:flex; gap:12px; align-items:center;">
       <button onclick="saveNoticeSettings()" style="
         background:var(--accent); color:white; border:none;
         padding:11px 28px; border-radius:8px; font-size:14px; font-weight:700;
-        cursor:pointer; transition:background 0.15s; flex: 1; min-width: 180px;"
+        cursor:pointer; transition:background 0.15s;"
         onmouseover="this.style.background='var(--accent2)'" onmouseout="this.style.background='var(--accent)'">
         💾 Save Notice Settings
       </button>
@@ -1044,7 +971,11 @@
   </div>
 </div>
 
-<!-- RESULT MODAL -->
+
+
+<!-- ══════════════════════════════════════════
+     RESULT MODAL
+══════════════════════════════════════════ -->
 <div class="modal-overlay" id="resultModal">
   <div class="modal">
     <div class="modal-header">
@@ -1058,7 +989,7 @@
     <div class="modal-body">
       <div class="form-grid">
 
-        <!-- STUDENT INFO SECTION -->
+        <!-- ── SECTION: Student Info ── -->
         <div class="form-section">
           <span class="form-section-label">👤 Student Information</span>
           <div class="form-section-line"></div>
@@ -1068,68 +999,97 @@
           <label>Roll No <span class="req">*</span></label>
           <input type="text" id="f-rollNo" placeholder="e.g. 579209" autocomplete="off" />
         </div>
-
         <div class="form-group">
           <label>Registration No <span class="req">*</span></label>
-          <input type="text" id="f-regNo" placeholder="e.g. 123456" autocomplete="off" />
+          <input type="text" id="f-regNo" placeholder="e.g. 2211120839" autocomplete="off" />
         </div>
-
         <div class="form-group form-full">
-          <label>Full Name <span class="req">*</span></label>
-          <input type="text" id="f-name" placeholder="Student full name" />
+          <label>Student Full Name <span class="req">*</span></label>
+          <input type="text" id="f-name" placeholder="Full name" autocomplete="off" />
         </div>
-
+        <div class="form-group">
+          <label>Father's Name</label>
+          <input type="text" id="f-fatherName" placeholder="Father's full name" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Mother's Name</label>
+          <input type="text" id="f-motherName" placeholder="Mother's full name" autocomplete="off" />
+        </div>
         <div class="form-group">
           <label>Date of Birth</label>
-          <input type="date" id="f-dateOfBirth" />
+          <input type="text" id="f-dateOfBirth" placeholder="DD-MM-YY" autocomplete="off" />
         </div>
-
         <div class="form-group">
-          <label>Religion <span class="req">*</span></label>
-          <select id="f-religion">
-            <option value="">Select Religion</option>
-            <option value="Islam">Islam</option>
-            <option value="Hindu">Hindu</option>
-            <option value="Christian">Christian</option>
-            <option value="Buddhist">Buddhist</option>
-          </select>
+          <label>Institute</label>
+          <input type="text" id="f-institute" placeholder="School / College name" autocomplete="off" />
         </div>
 
-        <!-- RESULT INFO SECTION -->
+        <!-- ── SECTION: Exam Details ── -->
         <div class="form-section">
-          <span class="form-section-label">📊 Result Information</span>
+          <span class="form-section-label">🏫 Examination Details</span>
           <div class="form-section-line"></div>
         </div>
 
         <div class="form-group">
-          <label>Board <span class="req">*</span></label>
-          <select id="f-board">
-            <option value="">Select Board</option>
-          </select>
+          <label>Examination <span class="req">*</span></label>
+          <input type="text" id="f-examination" list="examList" placeholder="e.g. SSC/Dakhil/Equivalent" autocomplete="off" />
+          <datalist id="examList"></datalist>
         </div>
-
         <div class="form-group">
           <label>Year <span class="req">*</span></label>
-          <select id="f-year">
-            <option value="">Select Year</option>
+          <input type="text" id="f-year" list="yearList" placeholder="e.g. 2025" autocomplete="off" />
+          <datalist id="yearList"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Board <span class="req">*</span></label>
+          <input type="text" id="f-board" list="boardList" placeholder="e.g. Dhaka" autocomplete="off" />
+          <datalist id="boardList"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Group</label>
+          <input type="text" id="f-group" placeholder="SCIENCE / BUSINESS / HUMANITIES" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <select id="f-type">
+            <option value="REGULAR">REGULAR</option>
+            <option value="IRREGULAR">IRREGULAR</option>
+            <option value="IMPROVEMENT">IMPROVEMENT</option>
+            <option value="PRIVATE">PRIVATE</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>GPA</label>
+          <input type="text" id="f-gpa" placeholder="e.g. 5.00" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label>Result <span class="req">*</span></label>
+          <select id="f-result">
+            <option value="PASS">✅ PASS</option>
+            <option value="FAIL">❌ FAIL</option>
           </select>
         </div>
 
-        <div class="form-group">
-          <label>Examination <span class="req">*</span></label>
-          <select id="f-exam">
-            <option value="">Select Examination</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>GPA <span class="req">*</span></label>
-          <input type="number" id="f-gpa" placeholder="e.g. 4.5" step="0.01" min="0" />
-        </div>
-
-        <!-- SUBJECTS SECTION -->
+        <!-- ── SECTION: Religion ── -->
         <div class="form-section">
-          <span class="form-section-label">📚 Subjects</span>
+          <span class="form-section-label">☪️ Religion Subject</span>
+          <div class="form-section-line"></div>
+        </div>
+
+        <div class="form-group form-full">
+          <label>Student's Faith — sets religion subject label</label>
+          <select id="f-religionLabel">
+            <option value="ISLAM AND MORAL EDUCATION">☪️  Islam — ISLAM AND MORAL EDUCATION</option>
+            <option value="HINDU RELIGION AND MORAL EDUCATION">🕉️  Hindu — HINDU RELIGION AND MORAL EDUCATION</option>
+            <option value="CHRISTIAN RELIGION AND MORAL EDUCATION">✝️  Christian — CHRISTIAN RELIGION AND MORAL EDUCATION</option>
+            <option value="BUDDHIST RELIGION AND MORAL EDUCATION">☸️  Buddhist — BUDDHIST RELIGION AND MORAL EDUCATION</option>
+            <option value="RELIGION AND MORAL EDUCATION">🌐  Other — RELIGION AND MORAL EDUCATION</option>
+          </select>
+        </div>
+
+        <!-- ── SECTION: Subjects ── -->
+        <div class="form-section">
+          <span class="form-section-label">📚 Subjects & Marks</span>
           <div class="form-section-line"></div>
         </div>
 
@@ -1143,108 +1103,599 @@
               <span></span>
             </div>
             <div id="subjectsContainer"></div>
+            <button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addSubjectRow()">+ Add Subject Row</button>
           </div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="addSubject()" style="margin-top:12px;">➕ Add Subject</button>
         </div>
 
-        <!-- VISIBILITY SECTION -->
+        <!-- ── SECTION: Visibility ── -->
         <div class="form-section">
-          <span class="form-section-label">👁️ Visibility</span>
+          <span class="form-section-label">👁 Visibility</span>
           <div class="form-section-line"></div>
         </div>
 
         <div class="form-full">
-          <div class="visibility-toggle" onclick="toggleHidden()">
-            <div class="toggle-track" id="hiddenToggle">
+          <div class="visibility-toggle" onclick="toggleHideCheck()">
+            <div class="toggle-track" id="toggleTrack">
               <div class="toggle-thumb"></div>
             </div>
             <div class="toggle-label">
-              <div class="toggle-title">Hidden from Public</div>
-              <div class="toggle-desc">Result will not appear on the public results portal</div>
+              <div class="toggle-title" id="toggleTitle">Result is Visible to Public</div>
+              <div class="toggle-desc" id="toggleDesc">Students can find this result when searching</div>
             </div>
           </div>
-          <input type="hidden" id="f-hidden" value="false" />
+          <input type="checkbox" id="f-hidden" style="display:none;" />
         </div>
-      </div>
-    </div>
+
+      </div><!-- /form-grid -->
+    </div><!-- /modal-body -->
 
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" id="submitBtn" onclick="submitResult()">Save Result</button>
+      <button class="btn btn-primary" onclick="saveResult()" id="saveBtn">💾 Save Result</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     CONFIRM DELETE DIALOG
+══════════════════════════════════════════ -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <h3>Delete Result?</h3>
+    <p id="confirmMsg">Are you sure? This action cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-red" id="confirmOk">Yes, Delete</button>
     </div>
   </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast"></div>
+<div id="toast"><span class="toast-icon" id="toastIcon"></span><span id="toastMsg"></span></div>
+
 
 <script>
-  // Mobile sidebar toggle
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    sidebar.classList.toggle('mobile-open');
-    overlay.classList.toggle('open');
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const params    = new URLSearchParams(location.search);
+const ADMIN_KEY = params.get('key') || '';
+let currentPage = 1;
+let editingId   = null;
+let searchTimer = null;
+let meta        = { boards: [], years: [], examinations: [] };
+let hiddenState = false;
+
+// Show masked key
+document.getElementById('keyDisplay').textContent =
+  ADMIN_KEY ? ADMIN_KEY.slice(0, 4) + '••••' : 'no key';
+
+// ══════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════
+function toast(msg, type = 'success') {
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  document.getElementById('toastIcon').textContent = icons[type] || '';
+  document.getElementById('toastMsg').textContent  = msg;
+  const el = document.getElementById('toast');
+  el.className = 'show ' + type;
+  setTimeout(() => { el.className = ''; }, 3400);
+}
+
+async function api(path, opts = {}) {
+  const sep = path.includes('?') ? '&' : '?';
+  const url = `/api/admin${path}${sep}key=${encodeURIComponent(ADMIN_KEY)}`;
+  const res = await fetch(url, {
+    headers: { 'Content-Type': 'application/json' },
+    ...opts
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Request failed');
+  return data;
+}
+
+// Auto-uppercase helper — applied on save, not just CSS
+function up(val) {
+  if (typeof val !== 'string') return val;
+  // Preserve DOB and numeric strings
+  return val.trim().toUpperCase();
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  // Settings tab is outside .tab system — use display toggle
+  const settingsEl = document.getElementById('tab-settings');
+  if (name === 'settings') {
+    settingsEl.style.display = 'block';
+  } else {
+    settingsEl.style.display = 'none';
+    document.getElementById('tab-' + name).classList.add('active');
   }
 
-  // Close sidebar when clicking outside on mobile
-  document.addEventListener('click', (e) => {
-    const sidebar = document.getElementById('sidebar');
-    const hamburger = document.getElementById('hamburger');
-    if (!sidebar.contains(e.target) && !hamburger.contains(e.target) && window.innerWidth <= 900) {
-      sidebar.classList.remove('mobile-open');
-      document.getElementById('sidebarOverlay').classList.remove('open');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    const txt = n.textContent.toLowerCase();
+    if (name === 'dashboard' && txt.includes('dashboard'))     n.classList.add('active');
+    if (name === 'results'   && txt.includes('all result'))    n.classList.add('active');
+    if (name === 'settings'  && txt.includes('notice'))        n.classList.add('active');
+  });
+  if (name === 'results')   loadResults(1);
+  if (name === 'dashboard') loadStats();
+  if (name === 'settings')  loadNoticeSettings();
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+async function init() {
+  await Promise.all([loadMeta(), loadStats()]);
+}
+
+async function loadMeta() {
+  try {
+    const d = await api('/meta');
+    meta = d.data;
+    const fExam  = document.getElementById('filterExam');
+    const fYear  = document.getElementById('filterYear');
+    const fBoard = document.getElementById('filterBoard');
+    fExam.innerHTML  = '<option value="">All Examinations</option>';
+    fYear.innerHTML  = '<option value="">All Years</option>';
+    fBoard.innerHTML = '<option value="">All Boards</option>';
+    meta.examinations.forEach(e => fExam.innerHTML  += `<option value="${e}">${e}</option>`);
+    meta.years.forEach(y        => fYear.innerHTML  += `<option value="${y}">${y}</option>`);
+    meta.boards.forEach(b       => fBoard.innerHTML += `<option value="${b}">${b}</option>`);
+    document.getElementById('examList').innerHTML  = meta.examinations.map(e => `<option value="${e}">`).join('');
+    document.getElementById('yearList').innerHTML  = meta.years.map(y => `<option value="${y}">`).join('');
+    document.getElementById('boardList').innerHTML = meta.boards.map(b => `<option value="${b}">`).join('');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function loadStats() {
+  try {
+    const d = await api('/stats');
+    document.getElementById('st-total').textContent  = d.data.total;
+    document.getElementById('st-passed').textContent = d.data.passed;
+    document.getElementById('st-failed').textContent = d.data.failed;
+    document.getElementById('st-hidden').textContent = d.data.hidden;
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// RESULTS TABLE
+// ══════════════════════════════════════════
+async function loadResults(page = 1) {
+  currentPage = page;
+  const search = document.getElementById('searchInput').value.trim();
+  const exam   = document.getElementById('filterExam').value;
+  const year   = document.getElementById('filterYear').value;
+  const board  = document.getElementById('filterBoard').value;
+
+  const qs = new URLSearchParams({ page, limit: 20 });
+  if (search) qs.set('search', search);
+  if (exam)   qs.set('examination', exam);
+  if (year)   qs.set('year', year);
+  if (board)  qs.set('board', board);
+
+  const tbody = document.getElementById('resultsBody');
+  tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="es-icon">⏳</div><div class="es-title">Loading…</div></div></td></tr>`;
+
+  try {
+    const d = await api(`/results?${qs}`);
+    const totalPages = Math.ceil(d.total / 20) || 1;
+    document.getElementById('pgInfo').textContent =
+      `Page ${page} of ${totalPages} — ${d.total} result${d.total !== 1 ? 's' : ''}`;
+    document.getElementById('resultsSubtitle').textContent =
+      `${d.total} result${d.total !== 1 ? 's' : ''} found`;
+    document.getElementById('prevBtn').disabled = page <= 1;
+    document.getElementById('nextBtn').disabled = page >= totalPages;
+
+    if (!d.data.length) {
+      tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+        <div class="es-icon">🔍</div>
+        <div class="es-title">No results found</div>
+        <div class="es-sub">Try adjusting your search or filters</div>
+      </div></td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = d.data.map(r => `
+      <tr>
+        <td>
+          <div class="mono">${r.rollNo}</div>
+          <div class="mono" style="color:var(--text3); font-size:11px;">${r.regNo}</div>
+        </td>
+        <td>
+          <div class="cell-name">${r.name}</div>
+          <div class="cell-sub">${r.fatherName || '—'}</div>
+        </td>
+        <td style="max-width:180px; font-size:12px;">${r.examination}</td>
+        <td><span class="mono" style="color:var(--text);">${r.year}</span></td>
+        <td>${r.board}</td>
+        <td><span class="mono" style="color:var(--accent);">${r.gpa || '—'}</span></td>
+        <td><span class="badge badge-${r.result === 'PASS' ? 'pass' : 'fail'}">${r.result === 'PASS' ? '✅' : '❌'} ${r.result}</span></td>
+        <td>
+          <span class="badge ${r.hidden ? 'badge-hidden' : 'badge-visible'}">
+            ${r.hidden ? '🙈 Hidden' : '👁 Visible'}
+          </span>
+        </td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="openEditModal('${r._id}')" title="Edit">✏️</button>
+            <button class="btn btn-ghost btn-icon btn-sm" onclick="toggleHideById('${r._id}')" title="${r.hidden ? 'Make Visible' : 'Hide'}">
+              ${r.hidden ? '👁' : '🙈'}
+            </button>
+            <button class="btn btn-red btn-icon btn-sm" onclick="confirmDelete('${r._id}', '${r.name.replace(/'/g, "\\'")}')" title="Delete">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state">
+      <div class="es-icon">⚠️</div>
+      <div class="es-title" style="color:var(--red);">${e.message}</div>
+    </div></td></tr>`;
+  }
+}
+
+function debounceSearch() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => loadResults(1), 380);
+}
+
+// ══════════════════════════════════════════
+// VISIBILITY TOGGLE (in modal)
+// ══════════════════════════════════════════
+function setHiddenState(isHidden) {
+  hiddenState = isHidden;
+  const track  = document.getElementById('toggleTrack');
+  const title  = document.getElementById('toggleTitle');
+  const desc   = document.getElementById('toggleDesc');
+  const check  = document.getElementById('f-hidden');
+  check.checked = isHidden;
+  if (isHidden) {
+    track.classList.add('on');
+    title.textContent = '🙈 Result is Hidden from Public';
+    desc.textContent  = 'Students cannot find this result when searching';
+    title.style.color = 'var(--amber)';
+  } else {
+    track.classList.remove('on');
+    title.textContent = '👁 Result is Visible to Public';
+    desc.textContent  = 'Students can find this result when searching';
+    title.style.color = 'var(--text)';
+  }
+}
+
+function toggleHideCheck() {
+  setHiddenState(!hiddenState);
+}
+
+// ══════════════════════════════════════════
+// SUBJECTS
+// ══════════════════════════════════════════
+const GRADES = ['A+','A','A-','B','C','D','F'];
+
+function addSubjectRow(sub = {}) {
+  const container = document.createElement('div');
+  container.className = 'subject-row';
+  const isReligion = (sub.name || '').toLowerCase().includes('religion');
+  container.innerHTML = `
+    <input type="text"   class="subj-code"  placeholder="Code"  value="${sub.code  || ''}" />
+    <div class="subj-name-wrap">
+      <input type="text" class="subj-name"  placeholder="Subject Name" value="${sub.name || ''}" style="width:100%;" />
+      ${isReligion ? '<span class="religion-chip">RELIGION</span>' : ''}
+    </div>
+    <input type="number" class="subj-marks" placeholder="—" value="${sub.marks != null ? sub.marks : ''}" min="0" max="100" />
+    <select class="subj-grade">
+      ${GRADES.map(g => `<option value="${g}" ${g === (sub.grade || 'A') ? 'selected' : ''}>${g}</option>`).join('')}
+    </select>
+    <button class="remove-subj" onclick="this.closest('.subject-row').remove()" title="Remove">✕</button>
+  `;
+  document.getElementById('subjectsContainer').appendChild(container);
+}
+
+function getSubjects() {
+  return [...document.querySelectorAll('.subject-row')].map(row => ({
+    code:  up(row.querySelector('.subj-code').value),
+    name:  up(row.querySelector('.subj-name').value),
+    marks: row.querySelector('.subj-marks').value !== '' ? Number(row.querySelector('.subj-marks').value) : null,
+    grade: row.querySelector('.subj-grade').value
+  })).filter(s => s.code && s.name);
+}
+
+// ══════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════
+const DEFAULT_SUBJECTS = [
+  { code: '101', name: 'BANGLA', grade: 'A' },
+  { code: '107', name: 'ENGLISH', grade: 'A' },
+  { code: '109', name: 'MATHEMATICS', grade: 'A' },
+  { code: '110', name: 'INFORMATION & COMMUNICATION TECHNOLOGY', grade: 'A' },
+  { code: '127', name: 'BANGLADESH & WORLD IDENTITY', grade: 'A' },
+  { code: '136', name: 'PHYSICAL EDUCATION & HEALTH', grade: 'A' },
+];
+
+function openAddModal() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = 'Add New Result';
+  document.getElementById('saveBtn').textContent    = '💾 Save Result';
+  clearForm();
+  DEFAULT_SUBJECTS.forEach(s => addSubjectRow(s));
+  // Add religion subject
+  const label = document.getElementById('f-religionLabel').value;
+  addSubjectRow({ code: '111', name: label, grade: 'A' });
+  setHiddenState(false);
+  document.getElementById('resultModal').classList.add('open');
+}
+
+async function openEditModal(id) {
+  editingId = id;
+  document.getElementById('modalTitle').textContent = 'Edit Result';
+  document.getElementById('saveBtn').textContent    = '💾 Update Result';
+  clearForm();
+  try {
+    const d = await api(`/results/${id}`);
+    const r = d.data;
+    document.getElementById('f-rollNo').value      = r.rollNo      || '';
+    document.getElementById('f-regNo').value       = r.regNo       || '';
+    document.getElementById('f-name').value        = r.name        || '';
+    document.getElementById('f-fatherName').value  = r.fatherName  || '';
+    document.getElementById('f-motherName').value  = r.motherName  || '';
+    document.getElementById('f-dateOfBirth').value = r.dateOfBirth || '';
+    document.getElementById('f-examination').value = r.examination || '';
+    document.getElementById('f-year').value        = r.year        || '';
+    document.getElementById('f-board').value       = r.board       || '';
+    document.getElementById('f-group').value       = r.group       || '';
+    document.getElementById('f-type').value        = r.type        || 'REGULAR';
+    document.getElementById('f-institute').value   = r.institute   || '';
+    document.getElementById('f-result').value      = r.result      || 'PASS';
+    document.getElementById('f-gpa').value         = r.gpa         || '';
+    setHiddenState(r.hidden || false);
+    // Religion label
+    if (r.religionSubjectLabel) {
+      const sel = document.getElementById('f-religionLabel');
+      [...sel.options].forEach(o => { if (o.value === r.religionSubjectLabel) o.selected = true; });
+    }
+    (r.subjects || []).forEach(s => addSubjectRow(s));
+    document.getElementById('resultModal').classList.add('open');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function closeModal() {
+  document.getElementById('resultModal').classList.remove('open');
+  editingId = null;
+}
+
+function clearForm() {
+  ['rollNo','regNo','name','fatherName','motherName','dateOfBirth',
+   'examination','year','board','group','institute','gpa'].forEach(f => {
+    document.getElementById('f-' + f).value = '';
+  });
+  document.getElementById('f-type').value   = 'REGULAR';
+  document.getElementById('f-result').value = 'PASS';
+  document.getElementById('subjectsContainer').innerHTML = '';
+  setHiddenState(false);
+}
+
+// ══════════════════════════════════════════
+// SAVE — uppercase enforced in JS too
+// ══════════════════════════════════════════
+async function saveResult() {
+  const rollNo = document.getElementById('f-rollNo').value.trim();
+  const regNo  = document.getElementById('f-regNo').value.trim();
+  const name   = document.getElementById('f-name').value.trim();
+  const exam   = document.getElementById('f-examination').value.trim();
+  const year   = document.getElementById('f-year').value.trim();
+  const board  = document.getElementById('f-board').value.trim();
+
+  if (!rollNo || !regNo || !name || !exam || !year || !board) {
+    toast('Roll No, Reg No, Name, Exam, Year, Board are required.', 'error');
+    return;
+  }
+
+  const body = {
+    rollNo:       rollNo.toUpperCase(),
+    regNo:        regNo.toUpperCase(),
+    name:         up(name),
+    fatherName:   up(document.getElementById('f-fatherName').value),
+    motherName:   up(document.getElementById('f-motherName').value),
+    dateOfBirth:  document.getElementById('f-dateOfBirth').value.trim(),  // keep as-is
+    examination:  up(exam),
+    year:         year.trim(),
+    board:        up(board),
+    group:        up(document.getElementById('f-group').value),
+    type:         document.getElementById('f-type').value,
+    institute:    up(document.getElementById('f-institute').value),
+    result:       document.getElementById('f-result').value,
+    gpa:          document.getElementById('f-gpa').value.trim(),
+    hidden:       document.getElementById('f-hidden').checked,
+    religionSubjectLabel: document.getElementById('f-religionLabel').value,
+    subjects:     getSubjects()
+  };
+
+  try {
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '⏳ Saving…';
+    btn.disabled    = true;
+
+    if (editingId) {
+      await api(`/results/${editingId}`, { method: 'PUT', body: JSON.stringify(body) });
+      toast('Result updated successfully!');
+    } else {
+      await api('/results', { method: 'POST', body: JSON.stringify(body) });
+      toast('Result added successfully!');
+    }
+
+    closeModal();
+    loadResults(currentPage);
+    loadStats();
+    loadMeta();
+  } catch(e) {
+    toast(e.message, 'error');
+  } finally {
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = editingId ? '💾 Update Result' : '💾 Save Result';
+    btn.disabled    = false;
+  }
+}
+
+// ══════════════════════════════════════════
+// TOGGLE HIDE (from table)
+// ══════════════════════════════════════════
+async function toggleHideById(id) {
+  try {
+    const d = await api(`/results/${id}/toggle-hide`, { method: 'PATCH' });
+    toast(d.hidden ? '🙈 Result hidden from public.' : '👁 Result is now visible.', 'info');
+    loadResults(currentPage);
+    loadStats();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ══════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════
+let deleteId = null;
+function confirmDelete(id, name) {
+  deleteId = id;
+  document.getElementById('confirmMsg').textContent =
+    `Delete result for "${name}"? This action cannot be undone.`;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+function closeConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('open');
+  deleteId = null;
+}
+document.getElementById('confirmOk').onclick = async () => {
+  if (!deleteId) return;
+  try {
+    await api(`/results/${deleteId}`, { method: 'DELETE' });
+    toast('Result deleted.', 'info');
+    closeConfirm();
+    loadResults(currentPage);
+    loadStats();
+  } catch(e) { toast(e.message, 'error'); closeConfirm(); }
+};
+
+// ══════════════════════════════════════════
+// RELIGION LABEL SYNC
+// ══════════════════════════════════════════
+document.getElementById('f-religionLabel').addEventListener('change', () => {
+  const label = document.getElementById('f-religionLabel').value;
+  document.querySelectorAll('.subj-name').forEach(input => {
+    const v = input.value.toLowerCase();
+    if (v.includes('religion') || v.includes('moral') || v.includes('islam') ||
+        v.includes('hindu') || v.includes('christian') || v.includes('buddhist')) {
+      input.value = label;
     }
   });
+});
 
-  // Existing functions (placeholder - add your actual implementation)
-  function switchTab(tabName) {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + tabName).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    event.target.closest('.nav-item')?.classList.add('active');
+// ══════════════════════════════════════════
+// NOTICE SETTINGS
+// ══════════════════════════════════════════
+
+// Sync toggle visual state
+document.getElementById('notice-enabled').addEventListener('change', function () {
+  const track = document.getElementById('toggle-track');
+  const thumb = document.getElementById('toggle-thumb');
+  if (this.checked) {
+    track.style.background = 'var(--accent)';
+    thumb.style.transform  = 'translateX(20px)';
+  } else {
+    track.style.background = 'var(--border2)';
+    thumb.style.transform  = 'translateX(0)';
+  }
+});
+
+async function loadNoticeSettings() {
+  document.getElementById('notice-live-status').textContent = 'Loading…';
+  try {
+    const json = await api('/settings/notice');
+    const d    = json.data;
+    if (!d) { document.getElementById('notice-live-status').textContent = ''; return; }
+
+    document.getElementById('notice-enabled').checked = !!d.enabled;
+    document.getElementById('notice-enabled').dispatchEvent(new Event('change'));
+    document.getElementById('notice-message').value = d.message || '';
+
+    // Convert ISO → datetime-local value (slice off seconds & Z)
+    if (d.startTime) document.getElementById('notice-start').value = d.startTime.slice(0, 16);
+    if (d.endTime)   document.getElementById('notice-end').value   = d.endTime.slice(0, 16);
+
+    updateLiveStatus(d);
+  } catch (err) {
+    document.getElementById('notice-live-status').textContent = 'Failed to load.';
+  }
+}
+
+function updateLiveStatus(d) {
+  const el  = document.getElementById('notice-live-status');
+  const now = new Date();
+  if (!d.enabled) { el.textContent = '🔴 Notice is disabled'; return; }
+  if (!d.message) { el.textContent = '⚠️ No message set'; return; }
+  if (d.startTime && new Date(d.startTime) > now) {
+    el.textContent = `⏳ Scheduled — starts ${new Date(d.startTime).toLocaleString()}`;
+    return;
+  }
+  if (d.endTime && new Date(d.endTime) < now) {
+    el.textContent = `⏰ Time window expired — ended ${new Date(d.endTime).toLocaleString()}`;
+    return;
+  }
+  el.textContent = '🟢 Notice is live on the public portal';
+}
+
+async function saveNoticeSettings() {
+  const message   = document.getElementById('notice-message').value.trim();
+  const enabled   = document.getElementById('notice-enabled').checked;
+  const startRaw  = document.getElementById('notice-start').value;
+  const endRaw    = document.getElementById('notice-end').value;
+
+  const startTime = startRaw ? new Date(startRaw).toISOString() : null;
+  const endTime   = endRaw   ? new Date(endRaw).toISOString()   : null;
+
+  if (startTime && endTime && new Date(startTime) >= new Date(endTime)) {
+    showNoticeToast('⚠️ End time must be after start time.', 'error');
+    return;
   }
 
-  function openAddModal() {
-    document.getElementById('resultModal').classList.add('open');
+  try {
+    const json = await api('/settings/notice', {
+      method: 'PUT',
+      body: JSON.stringify({ message, enabled, startTime, endTime })
+    });
+    if (json.success) {
+      showNoticeToast('✅ Notice settings saved successfully!', 'success');
+      updateLiveStatus(json.data);
+    } else {
+      showNoticeToast('❌ ' + (json.message || 'Save failed.'), 'error');
+    }
+  } catch (err) {
+    showNoticeToast('❌ ' + (err.message || 'Network error. Please try again.'), 'error');
   }
+}
 
-  function closeModal() {
-    document.getElementById('resultModal').classList.remove('open');
-  }
+function clearTimeLimits() {
+  document.getElementById('notice-start').value = '';
+  document.getElementById('notice-end').value   = '';
+}
 
-  function debounceSearch() {
-    // Add search functionality
-  }
+function showNoticeToast(msg, type) {
+  const el = document.getElementById('notice-toast');
+  el.textContent = msg;
+  el.style.display = 'block';
+  el.style.background = type === 'success' ? 'var(--green-bg)' : 'var(--red-bg)';
+  el.style.border     = type === 'success' ? '1px solid var(--green)' : '1px solid var(--red)';
+  el.style.color      = type === 'success' ? 'var(--green)' : 'var(--red)';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
 
-  function loadResults(page) {
-    // Add pagination functionality
-  }
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+init();
 
-  function submitResult() {
-    // Add form submission
-  }
-
-  function addSubject() {
-    // Add subject row
-  }
-
-  function toggleHidden() {
-    const toggle = document.getElementById('hiddenToggle');
-    const input = document.getElementById('f-hidden');
-    toggle.classList.toggle('on');
-    input.value = toggle.classList.contains('on') ? 'true' : 'false';
-  }
-
-  function clearTimeLimits() {
-    document.getElementById('notice-start').value = '';
-    document.getElementById('notice-end').value = '';
-  }
-
-  function saveNoticeSettings() {
-    // Add notice settings save
-  }
 </script>
-
 </body>
 </html>
