@@ -1087,11 +1087,11 @@
     const txt  = document.getElementById('status-text');
     if (d.result === 'PASS') {
       bar.className = 'result-status pass';
-      icon.textContent = '🎉';
+      icon.textContent = '';
       txt.textContent  = `PASSED — Congratulations, ${d.name}!`;
     } else {
       bar.className = 'result-status fail';
-      icon.textContent = '❌';
+      icon.textContent = '';
       txt.textContent  = `FAILED — ${d.name}`;
     }
 
